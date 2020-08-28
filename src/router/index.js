@@ -7,7 +7,10 @@ Vue.use(VueRouter);
 const routes = [{
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/recent",

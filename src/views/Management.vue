@@ -5,13 +5,13 @@
       <v-tab @click="showAdd = false">Remove Stock</v-tab>
     </v-tabs>
     <AddStock v-if="showAdd" />
-    <AddSell v-else />
+    <RemoveStock v-else />
   </div>
 </template>
 
 <script>
 import AddStock from "@/components/AddStock";
-import AddSell from "@/components/AddSell";
+import RemoveStock from "@/components/RemoveStock";
 
 export default {
   data() {
@@ -21,7 +21,7 @@ export default {
   },
   components: {
     AddStock,
-    AddSell,
+    RemoveStock,
   },
 };
 </script>

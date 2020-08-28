@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation :value="activeBtn" grow color="teal">
+  <v-bottom-navigation app color="teal">
     <v-btn to="/">
       <span>Add</span>
       <v-icon>mdi-plus</v-icon>

@@ -12,7 +12,6 @@
       <template v-slot:default>
         <thead>
           <tr>
-            <th></th>
             <th class="text-left">Name</th>
             <th class="text-left">Price</th>
             <th class="text-left">Quantity</th>
@@ -22,12 +21,14 @@
         </thead>
         <tbody>
           <tr v-for="history in orderHistory" :key="history.name">
-            <v-icon v-if="history.type == 'buy'" color="green"
-              >mdi-heart</v-icon
+            <td
+              :class="[
+                history.type == 'buy' ? 'background-color:red' : '',
+                'background-color:green',
+              ]"
             >
-            <v-icon v-if="history.type == 'sell'" color="red">mdi-heart</v-icon>
-
-            <td>{{ history.shareName }}</td>
+              {{ history.shareName }}
+            </td>
             <td>${{ history.price }}</td>
             <td>{{ history.quantity }}</td>
             <td>
