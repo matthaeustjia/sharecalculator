@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-
+import store from "@/store";
 Vue.use(VueRouter);
 
 const routes = [{
@@ -16,7 +16,13 @@ const routes = [{
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import( /* webpackChunkName: "about" */ "../views/RecentOrders.vue")
+      import(
+        /* webpackChunkName: "RecentOrders" */
+        "../views/RecentOrders.vue"
+      ),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/orders",
@@ -25,7 +31,10 @@ const routes = [{
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import( /* webpackChunkName: "about" */ "../views/Orders.vue")
+      import( /* webpackChunkName: "Orders" */ "../views/Orders.vue"),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: "/management",
@@ -34,7 +43,19 @@ const routes = [{
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import( /* webpackChunkName: "about" */ "../views/Management.vue")
+      import( /* webpackChunkName: "Management" */ "../views/Management.vue"),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/login",
+    name: "login",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import( /* webpackChunkName: "Login" */ "../views/Login.vue")
   }
 ];
 
@@ -44,4 +65,17 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    if (!store.state.user) {
+      next({
+        name: "login"
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 export default router;

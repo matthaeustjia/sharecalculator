@@ -53,6 +53,8 @@ export default {
   },
   created() {
     db.ref("invoice")
+      .orderByChild("owner")
+      .equalTo(this.$store.state.user)
       .limitToLast(10)
       .once("value", (snapshot) => {
         this.orderHistory = Object.values(snapshot.val());

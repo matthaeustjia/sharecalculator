@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-select
-      @change="getOrders(shareName)"
+      @change="getOrders()"
       v-model="shareName"
       :items="shareList"
       label="Share Name"
@@ -55,25 +55,30 @@
 
 <script>
 import { db } from "@/firebase";
+
 export default {
   data() {
     return {
       shareName: "",
-      orderHistory: [],
+      orderList: [],
       shareList: [],
+      orderHistory: [],
     };
   },
   methods: {
-    getOrders(shareName) {
-      db.ref("invoice")
-        .orderByChild("shareName")
-        .equalTo(shareName)
-        .once("value", (snapshot) => {
-          this.orderHistory = Object.values(snapshot.val());
-        });
+    getOrders() {
+      this.orderHistory = this.orderList.filter(
+        (history) => history.shareName === this.shareName
+      );
     },
   },
   created() {
+    db.ref("invoice")
+      .orderByChild("owner")
+      .equalTo(this.$store.state.user)
+      .once("value", (snapshot) => {
+        this.orderList = Object.values(snapshot.val());
+      });
     db.ref("ShareList").once("value", (snapshot) => {
       this.shareList = Object.values(snapshot.val());
     });

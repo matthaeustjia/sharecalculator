@@ -64,6 +64,7 @@ export default {
         type: this.type,
         quantity: this.quantity,
         date: this.date,
+        owner: this.$store.state.user,
       });
       (this.price = ""), (this.quantity = "");
     },
