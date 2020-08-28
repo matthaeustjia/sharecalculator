@@ -1,26 +1,26 @@
 <template>
   <div>
     <v-tabs fixed-tabs dark>
-      <v-tab @click="showBuy = true">Buy</v-tab>
-      <v-tab @click="showBuy = false">Sell</v-tab>
+      <v-tab @click="showAdd = true">Add Stock</v-tab>
+      <v-tab @click="showAdd = false">Remove Stock</v-tab>
     </v-tabs>
-    <AddBuy v-if="showBuy" />
+    <AddStock v-if="showAdd" />
     <AddSell v-else />
   </div>
 </template>
 
 <script>
-import AddBuy from "@/components/AddBuy";
+import AddStock from "@/components/AddStock";
 import AddSell from "@/components/AddSell";
 
 export default {
   data() {
     return {
-      showBuy: true,
+      showAdd: true,
     };
   },
   components: {
-    AddBuy,
+    AddStock,
     AddSell,
   },
 };
