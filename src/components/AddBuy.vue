@@ -6,7 +6,11 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title class="capitalised">{{ type }}</v-toolbar-title>
+                <v-toolbar-title class="capitalised">
+                  {{
+                  type
+                  }}
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
@@ -60,9 +64,12 @@ export default {
     };
   },
   created() {
-    db.ref("ShareList").once("value", snapshot => {
-      this.shareList = Object.values(snapshot.val());
-    });
+    db.ref("ShareList")
+      .orderByChild("owner")
+      .equalTo(this.$store.state.user)
+      .once("value", snapshot => {
+        this.shareList = Object.values(snapshot.val());
+      });
   },
   methods: {
     addToDatabase() {
