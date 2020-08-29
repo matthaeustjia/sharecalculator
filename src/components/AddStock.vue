@@ -27,6 +27,7 @@ export default {
         shareName: this.shareName.toUpperCase(),
         owner: this.$store.state.user
       });
+      this.$router.push("/");
     }
   }
 };

@@ -54,21 +54,37 @@
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
-                  Total Profit $
-                  {{
+                  Profit ${{
                   totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}
                 </v-list-item-title>
+                <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+                  NPAT ${{
+                  totalProfitAfterTax
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </v-list-item-title>
                 <v-list-item-subtitle>
-                  Total Buy $
-                  {{
+                  Buy ${{
                   totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}
                 </v-list-item-subtitle>
                 <v-list-item-subtitle>
-                  Total Sell $
-                  {{
+                  Sell ${{
                   totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle class="bg-red">
+                  Fee ${{
+                  totalBrokerageFee
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle class="bg-red">
+                  Tax ${{
+                  totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }}
                 </v-list-item-subtitle>
               </v-list-item-content>
@@ -147,6 +163,18 @@ export default {
     };
   },
   computed: {
+    totalTax() {
+      if (this.totalProfit > 0)
+        return parseFloat(this.totalProfit * 0.325).toFixed(2);
+      else return 0;
+    },
+    totalBrokerageFee() {
+      let totalBrokerageFee = 0;
+      for (let i = 0; i < this.orderHistory.length; i++) {
+        totalBrokerageFee += 9.5;
+      }
+      return totalBrokerageFee;
+    },
     totalBuy() {
       let totalBuy = 0;
       for (let i = 0; i < this.orderHistory.length; i++) {
@@ -170,7 +198,10 @@ export default {
       return totalSell;
     },
     totalProfit() {
-      return this.totalSell - this.totalBuy;
+      return this.totalSell - this.totalBuy - this.totalBrokerageFee;
+    },
+    totalProfitAfterTax() {
+      return parseFloat(this.totalProfit - this.totalTax).toFixed(2);
     }
   },
   methods: {

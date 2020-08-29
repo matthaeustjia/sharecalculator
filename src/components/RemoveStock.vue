@@ -12,7 +12,7 @@
           <tr v-for="share in shareList" :key="share.shareName">
             <td>{{ share.shareName }}</td>
             <td class="text-right">
-              <v-btn small color="error">Delete</v-btn>
+              <v-btn @click="deleteStock(share)" small color="error">Delete</v-btn>
             </td>
           </tr>
         </tbody>
@@ -29,12 +29,20 @@ export default {
       shareList: []
     };
   },
+  methods: {
+    deleteStock(share) {
+      console.log(share.keys);
+      db.ref("ShareList")
+        .child(share.key)
+        .remove();
+    }
+  },
   created() {
     db.ref("ShareList")
       .orderByChild("owner")
       .equalTo(this.$store.state.user)
       .once("value", snapshot => {
-        this.shareList = Object.values(snapshot.val());
+        this.shareList.push(snapshot.val());
       });
   }
 };
