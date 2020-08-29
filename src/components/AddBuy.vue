@@ -6,9 +6,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title class="capitalised">
-                  {{ type }}
-                </v-toolbar-title>
+                <v-toolbar-title class="capitalised">{{ type }}</v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
@@ -21,12 +19,7 @@
                     required
                   ></v-select>
 
-                  <v-text-field
-                    v-model="price"
-                    label="Price"
-                    required
-                    type="number"
-                  ></v-text-field>
+                  <v-text-field v-model="price" label="Price" required type="number"></v-text-field>
 
                   <v-text-field
                     v-model="quantity"
@@ -42,9 +35,7 @@
                     color="success"
                     :disabled="!isValid"
                     class="mr-4"
-                  >
-                    {{ type }}</v-btn
-                  >
+                  >{{ type }}</v-btn>
                 </v-form>
               </v-card-text>
             </v-card>
@@ -65,11 +56,11 @@ export default {
       shareList: [],
       price: "",
       quantity: "",
-      date: Date.now(),
+      date: Date.now()
     };
   },
   created() {
-    db.ref("ShareList").once("value", (snapshot) => {
+    db.ref("ShareList").once("value", snapshot => {
       this.shareList = Object.values(snapshot.val());
     });
   },
@@ -81,10 +72,10 @@ export default {
         type: this.type,
         quantity: this.quantity,
         date: this.date,
-        owner: this.$store.state.user,
+        owner: this.$store.state.user
       });
       (this.price = ""), (this.quantity = "");
-    },
+    }
   },
   props: ["type"],
   computed: {
@@ -94,8 +85,8 @@ export default {
     },
     total() {
       return this.price * this.quantity;
-    },
-  },
+    }
+  }
 };
 </script>
 

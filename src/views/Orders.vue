@@ -17,18 +17,11 @@
       width="290px"
     >
       <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="startDate"
-          label="Select startDate"
-          readonly
-          v-on="on"
-        ></v-text-field>
+        <v-text-field v-model="startDate" label="Select startDate" readonly v-on="on"></v-text-field>
       </template>
       <v-date-picker v-model="startDate" scrollable>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="$refs.startDialog.save(startDate)"
-          >OK</v-btn
-        >
+        <v-btn color="primary" @click="$refs.startDialog.save(startDate)">OK</v-btn>
       </v-date-picker>
     </v-dialog>
     <v-dialog
@@ -41,12 +34,7 @@
       width="290px"
     >
       <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="endDate"
-          label="Select endDate"
-          readonly
-          v-on="on"
-        ></v-text-field>
+        <v-text-field v-model="endDate" label="Select endDate" readonly v-on="on"></v-text-field>
       </template>
       <v-date-picker v-model="endDate" scrollable>
         <v-spacer></v-spacer>
@@ -54,23 +42,9 @@
       </v-date-picker>
     </v-dialog>
     <v-row justify="center">
-      <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-      >
+      <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            block
-            @click="getOrders"
-            color="success"
-            dark
-            v-bind="attrs"
-            v-on="on"
-          >
-            View
-          </v-btn>
+          <v-btn block @click="getOrders" color="success" dark v-bind="attrs" v-on="on">View</v-btn>
         </template>
         <v-card>
           <v-toolbar dark>
@@ -79,30 +53,30 @@
           <v-list rounded three-line subheader>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title
-                  :class="totalProfit > 0 ? 'bg-green' : 'bg-red'"
-                  >Total Profit
+                <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+                  Total Profit $
                   {{
-                    totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}</v-list-item-title
-                >
-                <v-list-item-subtitle
-                  >Total Buy
+                  totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  Total Buy $
                   {{
-                    totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}</v-list-item-subtitle
-                ><v-list-item-subtitle
-                  >Total Sell
+                  totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  Total Sell $
                   {{
-                    totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}</v-list-item-subtitle
-                >
+                  totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-subtitle
-                  ><v-simple-table dense>
+                <v-list-item-subtitle>
+                  <v-simple-table dense>
                     <template v-slot:default>
                       <thead>
                         <tr>
@@ -114,40 +88,35 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr
-                          v-for="history in orderHistory.slice().reverse()"
-                          :key="history.name"
-                        >
+                        <tr v-for="history in orderHistory.slice().reverse()" :key="history.name">
                           <td
                             :class="
                               history.type == 'buy' ? 'bg-green' : 'bg-red'
                             "
-                          >
-                            {{ history.shareName }}
-                          </td>
+                          >{{ history.shareName }}</td>
                           <td>${{ history.price }}</td>
                           <td>{{ history.quantity }}</td>
                           <td>
                             ${{
-                              (history.price * history.quantity)
-                                .toFixed(2)
-                                .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                            (history.price * history.quantity)
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                             }}
                           </td>
                           <td>
                             {{
-                              new Date(history.date).toLocaleDateString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                second: "2-digit",
-                              })
+                            new Date(history.date).toLocaleDateString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit"
+                            })
                             }}
                           </td>
                         </tr>
                       </tbody>
                     </template>
-                  </v-simple-table></v-list-item-subtitle
-                >
+                  </v-simple-table>
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -174,7 +143,7 @@ export default {
       shareName: "",
       orderList: [],
       shareList: [],
-      orderHistory: [],
+      orderHistory: []
     };
   },
   computed: {
@@ -202,42 +171,48 @@ export default {
     },
     totalProfit() {
       return this.totalSell - this.totalBuy;
-    },
+    }
   },
   methods: {
     getOrders() {
-      console.log(this.startDate);
+      var startDate;
+      var endDate;
+      if (this.startDate)
+        startDate = new Date(this.startDate).setHours(0, 0, 0, 0);
+      else startDate = new Date("2000-08-29").setHours(0, 0, 0, 0);
+
+      if (this.endDate)
+        endDate = new Date(this.endDate).setHours(23, 59, 59, 999);
+      else endDate = new Date("2037-08-29").setHours(23, 59, 59, 999);
+
+      console.log("startDate " + startDate);
+      console.log("endDate " + endDate);
+
       if (!this.shareName) {
-        this.orderHistory = this.orderList;
-      } else if (!this.startDate && !this.endDate) {
         this.orderHistory = this.orderList.filter(
-          (history) => history.shareName === this.shareName
+          history => history.date > startDate && history.date < endDate
         );
       } else {
-        var startDate = new Date(this.startDate).setHours(0, 0, 0, 0);
-
-        var endDate = new Date(this.endDate).setHours(23, 59, 59, 999);
-
         this.orderHistory = this.orderList.filter(
-          (history) =>
+          history =>
             history.shareName === this.shareName &&
             history.date > startDate &&
             history.date < endDate
         );
       }
-    },
+    }
   },
   created() {
     db.ref("invoice")
       .orderByChild("owner")
       .equalTo(this.$store.state.user)
-      .once("value", (snapshot) => {
+      .once("value", snapshot => {
         this.orderList = Object.values(snapshot.val());
       });
-    db.ref("ShareList").once("value", (snapshot) => {
+    db.ref("ShareList").once("value", snapshot => {
       this.shareList = Object.values(snapshot.val());
     });
-  },
+  }
 };
 </script>
 
