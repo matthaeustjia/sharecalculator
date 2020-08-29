@@ -1,19 +1,7 @@
 <template>
   <div>
-    <v-text-field
-      v-model="shareName"
-      label="Share Name"
-      required
-      type="text"
-    ></v-text-field>
-    <v-btn
-      @click="addStock()"
-      color="success"
-      :disabled="!isValid"
-      class="mr-4"
-    >
-      Add</v-btn
-    >
+    <v-text-field v-model="shareName" label="Share Name" required type="text"></v-text-field>
+    <v-btn @click="addStock()" color="success" :disabled="!isValid" class="mr-4">Add</v-btn>
   </div>
 </template>
 
@@ -22,7 +10,7 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      shareName: "",
+      shareName: ""
     };
   },
   computed: {
@@ -31,15 +19,16 @@ export default {
         return true;
       }
       return false;
-    },
+    }
   },
   methods: {
     addStock() {
       db.ref("ShareList").push({
         shareName: this.shareName.toUpperCase(),
+        owner: this.$store.state.user
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

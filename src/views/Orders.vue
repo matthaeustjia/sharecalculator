@@ -185,9 +185,6 @@ export default {
         endDate = new Date(this.endDate).setHours(23, 59, 59, 999);
       else endDate = new Date("2037-08-29").setHours(23, 59, 59, 999);
 
-      console.log("startDate " + startDate);
-      console.log("endDate " + endDate);
-
       if (!this.shareName) {
         this.orderHistory = this.orderList.filter(
           history => history.date > startDate && history.date < endDate
