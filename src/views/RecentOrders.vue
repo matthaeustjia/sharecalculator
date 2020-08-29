@@ -3,31 +3,18 @@
     <template v-slot:default>
       <thead>
         <tr>
-          <th></th>
-          <th class="text-left">Date</th>
           <th class="text-left">Name</th>
           <th class="text-left">Price</th>
           <th class="text-left">Quantity</th>
           <th class="text-left">Total</th>
+          <th class="text-left">Date</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="history in orderHistory.slice().reverse()"
-          :key="history.name"
-        >
-          <v-icon v-if="history.type == 'buy'" color="green">mdi-heart</v-icon>
-          <v-icon v-if="history.type == 'sell'" color="red">mdi-heart</v-icon>
-          <td>
-            {{
-              new Date(history.date).toLocaleDateString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-              })
-            }}
+        <tr v-for="history in orderHistory" :key="history.name">
+          <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">
+            {{ history.shareName }}
           </td>
-          <td>{{ history.shareName }}</td>
           <td>${{ history.price }}</td>
           <td>{{ history.quantity }}</td>
           <td>
@@ -35,6 +22,15 @@
               (history.price * history.quantity)
                 .toFixed(2)
                 .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+            }}
+          </td>
+          <td>
+            {{
+              new Date(history.date).toLocaleDateString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })
             }}
           </td>
         </tr>
@@ -63,4 +59,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.bg-red {
+  background-color: red;
+}
+.bg-green {
+  background-color: green;
+}
+</style>
