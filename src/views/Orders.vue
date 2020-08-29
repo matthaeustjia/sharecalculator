@@ -206,9 +206,12 @@ export default {
       .once("value", snapshot => {
         this.orderList = Object.values(snapshot.val());
       });
-    db.ref("ShareList").once("value", snapshot => {
-      this.shareList = Object.values(snapshot.val());
-    });
+    db.ref("ShareList")
+      .orderByChild("owner")
+      .equalTo(this.$store.state.user)
+      .once("value", snapshot => {
+        this.shareList = Object.values(snapshot.val());
+      });
   }
 };
 </script>
