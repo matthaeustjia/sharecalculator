@@ -1,29 +1,41 @@
 <template>
   <div>
-    <v-list-item>
-      <v-list-item-content>
-        <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
-          Profit ${{
+    <v-list-item-content>
+      <v-list-item-title>
+        Monthly Report
+      </v-list-item-title>
+      <v-divider></v-divider>
+      <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+        Profit ${{
           totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }}
-        </v-list-item-title>
-        <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
-          NPAT ${{
+        }}
+      </v-list-item-title>
+      <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+        NPAT ${{
           totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }}
-        </v-list-item-title>
-        <v-list-item-subtitle>Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
-        <v-list-item-subtitle>Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
-        <v-list-item-subtitle class="bg-red">
-          Fee ${{
+        }}
+      </v-list-item-title>
+      <v-list-item-subtitle
+        >Buy ${{
+          totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }}</v-list-item-subtitle
+      >
+      <v-list-item-subtitle
+        >Sell ${{
+          totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }}</v-list-item-subtitle
+      >
+      <v-list-item-subtitle class="bg-red">
+        Fee ${{
           totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          }}
-        </v-list-item-subtitle>
-        <v-list-item-subtitle
-          class="bg-red"
-        >Tax ${{ totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
+        }}
+      </v-list-item-subtitle>
+      <v-list-item-subtitle class="bg-red"
+        >Tax ${{
+          totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }}</v-list-item-subtitle
+      >
+    </v-list-item-content>
     <v-simple-table dense>
       <template v-slot:default>
         <thead>
@@ -36,24 +48,29 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="history in orderHistory.slice().reverse()" :key="history.name">
-            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">{{ history.shareName }}</td>
+          <tr
+            v-for="history in orderHistory.slice().reverse()"
+            :key="history.name"
+          >
+            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">
+              {{ history.shareName }}
+            </td>
             <td>${{ history.price }}</td>
             <td>{{ history.quantity }}</td>
             <td>
               ${{
-              (history.price * history.quantity)
-              .toFixed(2)
-              .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                (history.price * history.quantity)
+                  .toFixed(2)
+                  .replace(/\d(?=(\d{3})+\.)/g, "$&,")
               }}
             </td>
             <td>
               {{
-              new Date(history.date).toLocaleDateString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit"
-              })
+                new Date(history.date).toLocaleDateString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
               }}
             </td>
           </tr>
@@ -68,7 +85,7 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      orderList: []
+      orderList: [],
     };
   },
   created() {
@@ -82,14 +99,14 @@ export default {
       .orderByChild("date")
       .startAt(firstDay)
       .endAt(lastDay)
-      .once("value", snapshot => {
+      .once("value", (snapshot) => {
         this.orderList = Object.values(snapshot.val());
       });
   },
   computed: {
     orderHistory() {
       return this.orderList.filter(
-        history => history.owner === this.$store.state.user
+        (history) => history.owner === this.$store.state.user
       );
     },
     totalTax() {
@@ -131,8 +148,8 @@ export default {
     },
     totalProfitAfterTax() {
       return parseFloat(this.totalProfit - this.totalTax).toFixed(2);
-    }
-  }
+    },
+  },
 };
 </script>
 

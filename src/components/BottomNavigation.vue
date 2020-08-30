@@ -1,8 +1,7 @@
 <template>
   <v-bottom-navigation app color="teal">
     <v-btn to="/">
-      <span>Add</span>
-      <v-icon>mdi-plus</v-icon>
+      <v-icon>add_shopping_cart </v-icon>
     </v-btn>
 
     <v-btn to="/recent">
@@ -11,12 +10,10 @@
     </v-btn>
 
     <v-btn to="/orders">
-      <span>Orders</span>
-      <v-icon>mdi-map-marker</v-icon>
+      <v-icon>filter_list</v-icon>
     </v-btn>
     <v-btn to="/management">
-      <span>Management</span>
-      <v-icon>mdi-map-marker</v-icon>
+      <v-icon>build</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
