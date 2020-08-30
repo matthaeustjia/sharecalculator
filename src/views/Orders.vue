@@ -154,7 +154,7 @@
                               new Date(history.date).toLocaleDateString([], {
                                 hour: "2-digit",
                                 minute: "2-digit",
-                                second: "2-digit"
+                                second: "2-digit",
                               })
                             }}
                           </td>
@@ -189,7 +189,7 @@ export default {
       shareName: "",
       orderList: [],
       shareList: [],
-      orderHistory: []
+      orderHistory: [],
     };
   },
   computed: {
@@ -201,7 +201,7 @@ export default {
     totalBrokerageFee() {
       let totalBrokerageFee = 0;
       for (let i = 0; i < this.orderHistory.length; i++) {
-        totalBrokerageFee += 9.5;
+        totalBrokerageFee += parseFloat(this.orderHistory[i].brokerageFee);
       }
       return totalBrokerageFee;
     },
@@ -232,7 +232,7 @@ export default {
     },
     totalProfitAfterTax() {
       return parseFloat(this.totalProfit - this.totalTax).toFixed(2);
-    }
+    },
   },
   methods: {
     getOrders() {
@@ -248,32 +248,32 @@ export default {
 
       if (!this.shareName) {
         this.orderHistory = this.orderList.filter(
-          history => history.date > startDate && history.date < endDate
+          (history) => history.date > startDate && history.date < endDate
         );
       } else {
         this.orderHistory = this.orderList.filter(
-          history =>
+          (history) =>
             history.shareName === this.shareName &&
             history.date > startDate &&
             history.date < endDate
         );
       }
-    }
+    },
   },
   created() {
     db.ref("invoice")
       .orderByChild("owner")
       .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
+      .once("value", (snapshot) => {
         this.orderList = Object.values(snapshot.val());
       });
     db.ref("ShareList")
       .orderByChild("owner")
       .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
+      .once("value", (snapshot) => {
         this.shareList = Object.values(snapshot.val());
       });
-  }
+  },
 };
 </script>
 
