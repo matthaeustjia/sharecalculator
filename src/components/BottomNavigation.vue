@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation app color="teal">
+  <v-bottom-navigation v-if="user" app color="teal">
     <v-btn to="/">
       <v-icon>add_shopping_cart </v-icon>
     </v-btn>
@@ -18,7 +18,13 @@
   </v-bottom-navigation>
 </template>
 <script>
-export default {};
+export default {
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped></style>

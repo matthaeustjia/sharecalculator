@@ -7,9 +7,7 @@
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
                 <v-toolbar-title class="capitalised">
-                  {{
-                  type
-                  }}
+                  {{ type }}
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
@@ -23,7 +21,12 @@
                     required
                   ></v-select>
 
-                  <v-text-field v-model="price" label="Price" required type="number"></v-text-field>
+                  <v-text-field
+                    v-model="price"
+                    label="Price"
+                    required
+                    type="number"
+                  ></v-text-field>
 
                   <v-text-field
                     v-model="quantity"
@@ -34,12 +37,20 @@
                     step="1"
                   ></v-text-field>
 
+                  <v-select
+                    v-model="broker"
+                    label="Broker"
+                    :items="brokerList"
+                    item-text="shareName"
+                    required
+                  ></v-select>
                   <v-btn
                     @click="addToDatabase()"
                     color="success"
                     :disabled="!isValid"
                     class="mr-4"
-                  >{{ type }}</v-btn>
+                    >{{ type }}</v-btn
+                  >
                 </v-form>
               </v-card-text>
             </v-card>
@@ -56,33 +67,51 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
+      brokerList: ["SelfWealth", "Commsec"],
       shareName: "",
       shareList: [],
       price: "",
       quantity: "",
-      date: Date.now()
+      broker: "SelfWealth",
+      date: Date.now(),
     };
   },
   created() {
     db.ref("ShareList")
       .orderByChild("owner")
       .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
+      .once("value", (snapshot) => {
         this.shareList = Object.values(snapshot.val());
       });
   },
   methods: {
     addToDatabase() {
+      let brokerageFee;
+      if (this.broker == "SelfWealth") {
+        brokerageFee = 9.5;
+      } else {
+        if (this.total <= 1000) {
+          brokerageFee = 10;
+        } else if (this.total > 1000 && this.total <= 10000) {
+          brokerageFee = 19.95;
+        } else if (this.total > 10000 && this.total <= 25000) {
+          brokerageFee = 29.95;
+        } else {
+          brokerageFee = this.total * 0.0012;
+        }
+      }
       db.ref("invoice").push({
         shareName: this.shareName,
         price: this.price,
         type: this.type,
         quantity: this.quantity,
+        brokerageFee: brokerageFee,
         date: this.date,
-        owner: this.$store.state.user
+        owner: this.$store.state.user,
       });
+
       (this.price = ""), (this.quantity = "");
-    }
+    },
   },
   props: ["type"],
   computed: {
@@ -92,8 +121,8 @@ export default {
     },
     total() {
       return this.price * this.quantity;
-    }
-  }
+    },
+  },
 };
 </script>
 
