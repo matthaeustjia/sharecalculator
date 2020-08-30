@@ -203,7 +203,7 @@ export default {
       for (let i = 0; i < this.orderHistory.length; i++) {
         totalBrokerageFee += parseFloat(this.orderHistory[i].brokerageFee);
       }
-      return totalBrokerageFee;
+      return parseFloat(totalBrokerageFee).toFixed(2);
     },
     totalBuy() {
       let totalBuy = 0;
