@@ -13,13 +13,13 @@
                 <v-card-text>
                   <v-form @submit.prevent="signIn">
                     <v-text-field
-                      prepend-icon="mdi-account"
+                      prepend-icon="person"
                       v-model="user"
                       label="Login"
                       type="text"
                     ></v-text-field>
                     <v-text-field
-                      prepend-icon="mdi-account"
+                      prepend-icon="lock"
                       v-model="password"
                       label="Password"
                       type="password"

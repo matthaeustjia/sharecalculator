@@ -105,7 +105,7 @@ export default {
         price: this.price,
         type: this.type,
         quantity: this.quantity,
-        brokerageFee: parseFloat(brokerageFee).toFixed(2),
+        brokerageFee: brokerageFee.toFixed(2),
         date: this.date,
         owner: this.$store.state.user,
       });

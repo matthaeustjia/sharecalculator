@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: ""
+    user: "",
+    holdings: {}
   },
   mutations: {
     setUser(state, user) {
@@ -13,6 +14,17 @@ export default new Vuex.Store({
         state.user = null;
       } else {
         state.user = user.toLowerCase();
+      }
+    },
+    setHoldings(state, holdings) {
+      if (state.holdings[holdings.shareName]) {
+        if (holdings.type == "buy") {
+          state.holdings[holdings.shareName].quantity += holdings.quantity;
+        } else {
+          state.holdings[holdings.shareName].quantity -= holdings.quantity;
+        }
+      } else {
+        state.holdings[holdings.shareName] = holdings;
       }
     }
   },

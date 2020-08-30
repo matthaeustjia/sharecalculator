@@ -36,6 +36,7 @@
         }}</v-list-item-subtitle
       >
     </v-list-item-content>
+    Holding
     <v-simple-table dense>
       <template v-slot:default>
         <thead>
@@ -44,6 +45,7 @@
             <th class="text-left">Price</th>
             <th class="text-left">Quantity</th>
             <th class="text-left">Total</th>
+            <th class="text-left">Broker Fee</th>
             <th class="text-left">Date</th>
           </tr>
         </thead>
@@ -64,6 +66,8 @@
                   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
               }}
             </td>
+            <td>{{ history.brokerageFee }}</td>
+
             <td>
               {{
                 new Date(history.date).toLocaleDateString([], {
@@ -82,10 +86,12 @@
 
 <script>
 import { db } from "@/firebase";
+
 export default {
   data() {
     return {
       orderList: [],
+      holdings: this.$store.state.holdings,
     };
   },
   created() {
@@ -94,12 +100,19 @@ export default {
       m = date.getMonth();
     var firstDay = new Date(y, m, 1).setHours(0, 0, 0, 0);
     var lastDay = new Date(y, m + 1, 0).setHours(23, 59, 59, 999);
-    console.log(firstDay, lastDay);
     db.ref("invoice")
       .orderByChild("date")
       .startAt(firstDay)
       .endAt(lastDay)
       .once("value", (snapshot) => {
+        snapshot.forEach((child) => {
+          this.$store.commit("setHoldings", {
+            shareName: child.val().shareName,
+            type: child.val().type,
+            quantity: parseInt(child.val().quantity),
+          });
+        });
+
         this.orderList = Object.values(snapshot.val());
       });
   },
@@ -117,9 +130,9 @@ export default {
     totalBrokerageFee() {
       let totalBrokerageFee = 0;
       for (let i = 0; i < this.orderHistory.length; i++) {
-        totalBrokerageFee += 9.5;
+        totalBrokerageFee += parseFloat(this.orderHistory[i].brokerageFee);
       }
-      return totalBrokerageFee;
+      return parseFloat(totalBrokerageFee).toFixed(2);
     },
     totalBuy() {
       let totalBuy = 0;

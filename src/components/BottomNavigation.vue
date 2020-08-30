@@ -5,8 +5,7 @@
     </v-btn>
 
     <v-btn to="/recent">
-      <span>Recent</span>
-      <v-icon>mdi-heart</v-icon>
+      <v-icon>history</v-icon>
     </v-btn>
 
     <v-btn to="/orders">
@@ -15,10 +14,18 @@
     <v-btn to="/management">
       <v-icon>build</v-icon>
     </v-btn>
+    <v-btn @click="signOut()">
+      <v-icon>exit_to_app</v-icon>
+    </v-btn>
   </v-bottom-navigation>
 </template>
 <script>
 export default {
+  methods: {
+    signOut() {
+      this.$store.commit("setUser", ""), this.$router.push("/login");
+    },
+  },
   computed: {
     user() {
       return this.$store.state.user;
