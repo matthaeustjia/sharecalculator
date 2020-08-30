@@ -1,42 +1,47 @@
 <template>
   <div>
     <v-list-item-content>
-      <v-list-item-title>
-        Monthly Report
-      </v-list-item-title>
+      <v-list-item-title>Monthly Report</v-list-item-title>
       <v-divider></v-divider>
       <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
         Profit ${{
-          totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-title>
       <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
         NPAT ${{
-          totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-title>
-      <v-list-item-subtitle
-        >Buy ${{
-          totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}</v-list-item-subtitle
-      >
-      <v-list-item-subtitle
-        >Sell ${{
-          totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}</v-list-item-subtitle
-      >
+      <v-list-item-subtitle>Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
+      <v-list-item-subtitle>Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
       <v-list-item-subtitle class="bg-red">
         Fee ${{
-          totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-subtitle>
-      <v-list-item-subtitle class="bg-red"
-        >Tax ${{
-          totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}</v-list-item-subtitle
-      >
-    </v-list-item-content>
-    Holding
+      <v-list-item-subtitle
+        class="bg-red"
+      >Tax ${{ totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
+    </v-list-item-content>Holding
+    <v-simple-table dense>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">Name</th>
+            <th class="text-left">Quantity</th>
+            <th class="text-left">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="holding in notEmptyHoldings" :key="holding.shareName">
+            <td>{{ holding.shareName }}</td>
+            <td>{{ holding.quantity }}</td>
+            <td>150</td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
     <v-simple-table dense>
       <template v-slot:default>
         <thead>
@@ -50,31 +55,26 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="history in orderHistory.slice().reverse()"
-            :key="history.name"
-          >
-            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">
-              {{ history.shareName }}
-            </td>
+          <tr v-for="history in orderHistory.slice().reverse()" :key="history.name">
+            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">{{ history.shareName }}</td>
             <td>${{ history.price }}</td>
             <td>{{ history.quantity }}</td>
             <td>
               ${{
-                (history.price * history.quantity)
-                  .toFixed(2)
-                  .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+              (history.price * history.quantity)
+              .toFixed(2)
+              .replace(/\d(?=(\d{3})+\.)/g, "$&,")
               }}
             </td>
             <td>{{ history.brokerageFee }}</td>
 
             <td>
               {{
-                new Date(history.date).toLocaleDateString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                })
+              new Date(history.date).toLocaleDateString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit"
+              })
               }}
             </td>
           </tr>
@@ -91,10 +91,11 @@ export default {
   data() {
     return {
       orderList: [],
-      holdings: this.$store.state.holdings,
+      holdings: {}
     };
   },
   created() {
+    this.$store.commit("setHoldings");
     var date = new Date(),
       y = date.getFullYear(),
       m = date.getMonth();
@@ -104,22 +105,28 @@ export default {
       .orderByChild("date")
       .startAt(firstDay)
       .endAt(lastDay)
-      .once("value", (snapshot) => {
-        snapshot.forEach((child) => {
+      .once("value", snapshot => {
+        snapshot.forEach(child => {
           this.$store.commit("setHoldings", {
             shareName: child.val().shareName,
             type: child.val().type,
-            quantity: parseInt(child.val().quantity),
+            quantity: parseInt(child.val().quantity)
           });
         });
 
         this.orderList = Object.values(snapshot.val());
+        this.holdings = this.$store.state.holdings;
       });
   },
   computed: {
+    notEmptyHoldings() {
+      return Object.values(this.holdings).filter(
+        holding => holding.quantity > 0
+      );
+    },
     orderHistory() {
       return this.orderList.filter(
-        (history) => history.owner === this.$store.state.user
+        history => history.owner === this.$store.state.user
       );
     },
     totalTax() {
@@ -161,8 +168,8 @@ export default {
     },
     totalProfitAfterTax() {
       return parseFloat(this.totalProfit - this.totalTax).toFixed(2);
-    },
-  },
+    }
+  }
 };
 </script>
 
