@@ -1,8 +1,8 @@
 <template>
   <v-app dark>
-    <v-content>
+    <v-main>
       <router-view></router-view>
-    </v-content>
+    </v-main>
     <BottomNavigation />
   </v-app>
 </template>
@@ -14,11 +14,11 @@ export default {
   name: "App",
 
   components: {
-    BottomNavigation,
+    BottomNavigation
   },
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>

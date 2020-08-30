@@ -7,15 +7,7 @@
       item-text="shareName"
       required
     ></v-select>
-    <v-dialog
-      ref="startDialog"
-      v-model="startDateModal"
-      :return-value.sync="startDate"
-      persistent
-      lazy
-      full-width
-      width="290px"
-    >
+    <v-dialog ref="startDialog" v-model="startDateModal" :return-value.sync="startDate" persistent>
       <template v-slot:activator="{ on }">
         <v-text-field v-model="startDate" label="Select startDate" readonly v-on="on"></v-text-field>
       </template>
@@ -24,15 +16,7 @@
         <v-btn color="primary" @click="$refs.startDialog.save(startDate)">OK</v-btn>
       </v-date-picker>
     </v-dialog>
-    <v-dialog
-      ref="endDialog"
-      v-model="endDateModal"
-      :return-value.sync="endDate"
-      persistent
-      lazy
-      full-width
-      width="290px"
-    >
+    <v-dialog ref="endDialog" v-model="endDateModal" :return-value.sync="endDate" persistent>
       <template v-slot:activator="{ on }">
         <v-text-field v-model="endDate" label="Select endDate" readonly v-on="on"></v-text-field>
       </template>

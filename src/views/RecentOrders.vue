@@ -1,42 +1,66 @@
 <template>
-  <v-simple-table dense>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">Name</th>
-          <th class="text-left">Price</th>
-          <th class="text-left">Quantity</th>
-          <th class="text-left">Total</th>
-          <th class="text-left">Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="history in orderHistory" :key="history.name">
-          <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">
-            {{ history.shareName }}
-          </td>
-          <td>${{ history.price }}</td>
-          <td>{{ history.quantity }}</td>
-          <td>
-            ${{
+  <div>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+          Profit ${{
+          totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }}
+        </v-list-item-title>
+        <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+          NPAT ${{
+          totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }}
+        </v-list-item-title>
+        <v-list-item-subtitle>Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
+        <v-list-item-subtitle>Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
+        <v-list-item-subtitle class="bg-red">
+          Fee ${{
+          totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }}
+        </v-list-item-subtitle>
+        <v-list-item-subtitle
+          class="bg-red"
+        >Tax ${{ totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+    <v-simple-table dense>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">Name</th>
+            <th class="text-left">Price</th>
+            <th class="text-left">Quantity</th>
+            <th class="text-left">Total</th>
+            <th class="text-left">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="history in orderHistory.slice().reverse()" :key="history.name">
+            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">{{ history.shareName }}</td>
+            <td>${{ history.price }}</td>
+            <td>{{ history.quantity }}</td>
+            <td>
+              ${{
               (history.price * history.quantity)
-                .toFixed(2)
-                .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-            }}
-          </td>
-          <td>
-            {{
+              .toFixed(2)
+              .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+              }}
+            </td>
+            <td>
+              {{
               new Date(history.date).toLocaleDateString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit"
               })
-            }}
-          </td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+  </div>
 </template>
 
 <script>
@@ -44,18 +68,71 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      orderHistory: [],
+      orderList: []
     };
   },
   created() {
+    var date = new Date(),
+      y = date.getFullYear(),
+      m = date.getMonth();
+    var firstDay = new Date(y, m, 1).setHours(0, 0, 0, 0);
+    var lastDay = new Date(y, m + 1, 0).setHours(23, 59, 59, 999);
+    console.log(firstDay, lastDay);
     db.ref("invoice")
-      .orderByChild("owner")
-      .equalTo(this.$store.state.user)
-      .limitToLast(10)
-      .once("value", (snapshot) => {
-        this.orderHistory = Object.values(snapshot.val());
+      .orderByChild("date")
+      .startAt(firstDay)
+      .endAt(lastDay)
+      .once("value", snapshot => {
+        this.orderList = Object.values(snapshot.val());
       });
   },
+  computed: {
+    orderHistory() {
+      return this.orderList.filter(
+        history => history.owner === this.$store.state.user
+      );
+    },
+    totalTax() {
+      if (this.totalProfit > 0)
+        return parseFloat(this.totalProfit * 0.325).toFixed(2);
+      else return 0;
+    },
+    totalBrokerageFee() {
+      let totalBrokerageFee = 0;
+      for (let i = 0; i < this.orderHistory.length; i++) {
+        totalBrokerageFee += 9.5;
+      }
+      return totalBrokerageFee;
+    },
+    totalBuy() {
+      let totalBuy = 0;
+      for (let i = 0; i < this.orderHistory.length; i++) {
+        if (this.orderHistory[i].type == "buy") {
+          totalBuy += parseFloat(
+            this.orderHistory[i].price * this.orderHistory[i].quantity
+          );
+        }
+      }
+      return totalBuy;
+    },
+    totalSell() {
+      let totalSell = 0;
+      for (let i = 0; i < this.orderHistory.length; i++) {
+        if (this.orderHistory[i].type == "sell") {
+          totalSell += parseFloat(
+            this.orderHistory[i].price * this.orderHistory[i].quantity
+          );
+        }
+      }
+      return totalSell;
+    },
+    totalProfit() {
+      return this.totalSell - this.totalBuy - this.totalBrokerageFee;
+    },
+    totalProfitAfterTax() {
+      return parseFloat(this.totalProfit - this.totalTax).toFixed(2);
+    }
+  }
 };
 </script>
 
