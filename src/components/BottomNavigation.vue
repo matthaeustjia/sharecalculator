@@ -1,7 +1,7 @@
 <template>
   <v-bottom-navigation v-if="user" app color="teal">
     <v-btn to="/">
-      <v-icon>add_shopping_cart </v-icon>
+      <v-icon>add_shopping_cart</v-icon>
     </v-btn>
 
     <v-btn to="/recent">
@@ -24,13 +24,13 @@ export default {
   methods: {
     signOut() {
       this.$store.commit("setUser", ""), this.$router.push("/login");
-    },
+    }
   },
   computed: {
     user() {
       return this.$store.state.user;
-    },
-  },
+    }
+  }
 };
 </script>
 

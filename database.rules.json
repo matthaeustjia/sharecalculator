@@ -1,6 +1,15 @@
 {
   "rules": {
-    ".read": "now < 1601042400000",  // 2020-9-26
-    ".write": "now < 1601042400000",  // 2020-9-26
+    "ShareList": {
+      ".indexOn": ["owner"]
+    },
+    "invoice": {
+      ".indexOn": ["date", "owner"]
+    },
+    "holdings": {
+      ".indexOn": ["owner"]
+    },
+    ".read": "now < 1601042400000", // 2020-9-26
+    ".write": "now < 1601042400000", // 2020-9-26
   }
 }

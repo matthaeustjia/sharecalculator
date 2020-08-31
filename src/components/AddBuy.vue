@@ -6,11 +6,15 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title class="capitalised">{{ type }}</v-toolbar-title>
+                <v-toolbar-title class="capitalised">
+                  {{
+                  type
+                  }}
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form v-on:submit.prevent="addToDatabase()">
                   <v-select
                     v-model="shareName"
                     :items="shareList"
@@ -37,12 +41,7 @@
                     item-text="shareName"
                     required
                   ></v-select>
-                  <v-btn
-                    @click="addToDatabase()"
-                    color="success"
-                    :disabled="!isValid"
-                    class="mr-4"
-                  >{{ type }}</v-btn>
+                  <v-btn type="subit" color="success" :disabled="!isValid" class="mr-4">{{ type }}</v-btn>
                 </v-form>
               </v-card-text>
             </v-card>
