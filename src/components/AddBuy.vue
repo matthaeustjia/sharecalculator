@@ -6,7 +6,11 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
               <v-toolbar dark color="primary">
-                <v-toolbar-title class="capitalised">{{ type }}</v-toolbar-title>
+                <v-toolbar-title class="capitalised">
+                  {{
+                  type
+                  }}
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
@@ -19,8 +23,6 @@
                     required
                   ></v-select>
 
-                  <v-text-field v-model="price" label="Price" required type="number"></v-text-field>
-
                   <v-text-field
                     v-model="quantity"
                     label="Quantity"
@@ -29,6 +31,8 @@
                     min="1"
                     step="1"
                   ></v-text-field>
+
+                  <v-text-field v-model="price" label="Price" required type="number"></v-text-field>
 
                   <v-select
                     v-model="broker"
@@ -123,8 +127,10 @@ export default {
         date: this.date,
         owner: this.$store.state.user
       });
-
-      (this.price = ""), (this.quantity = "");
+      this.price = "";
+      this.quantity = "";
+      setTimeout(() => this.$router.push("/recent"), 1000);
+      this.$parent.initializeData();
     }
   },
   props: ["type"],

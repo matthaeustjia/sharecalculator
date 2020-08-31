@@ -100,7 +100,7 @@
                           <td>
                             ${{
                             (history.price * history.quantity)
-                            .toFixed(2)
+                            .toFixed(3)
                             .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                             }}
                           </td>
@@ -155,7 +155,7 @@ export default {
   computed: {
     totalTax() {
       if (this.totalProfit > 0)
-        return parseFloat(this.totalProfit * 0.325).toFixed(2);
+        return parseFloat(this.totalProfit * 0.325).toFixed(3);
       else return 0;
     },
     totalBrokerageFee() {
@@ -163,7 +163,7 @@ export default {
       for (let i = 0; i < this.orderHistory.length; i++) {
         totalBrokerageFee += parseFloat(this.orderHistory[i].brokerageFee);
       }
-      return parseFloat(totalBrokerageFee).toFixed(2);
+      return parseFloat(totalBrokerageFee).toFixed(3);
     },
     totalBuy() {
       let totalBuy = 0;
@@ -191,7 +191,7 @@ export default {
       return this.totalSell - this.totalBuy - this.totalBrokerageFee;
     },
     totalProfitAfterTax() {
-      return parseFloat(this.totalProfit - this.totalTax).toFixed(2);
+      return parseFloat(this.totalProfit - this.totalTax).toFixed(3);
     }
   },
   methods: {
@@ -222,6 +222,7 @@ export default {
       db.ref("invoice")
         .child(history.key)
         .remove();
+      this.$router.push("/");
     },
     getOrders() {
       var startDate;

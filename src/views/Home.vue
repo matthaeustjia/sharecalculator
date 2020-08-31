@@ -18,41 +18,46 @@ export default {
       type: "buy"
     };
   },
+  methods: {
+    initializeData() {
+      this.$store.commit("clearAll");
+      db.ref("ShareList")
+        .orderByChild("owner")
+        .equalTo(this.$store.state.user)
+        .once("value", snapshot => {
+          snapshot.forEach(child => {
+            this.$store.commit("addShareList", {
+              key: child.key,
+              ...child.val()
+            });
+          });
+        });
+      db.ref("invoice")
+        .orderByChild("owner")
+        .equalTo(this.$store.state.user)
+        .once("value", snapshot => {
+          snapshot.forEach(child => {
+            this.$store.commit("addOrderList", {
+              key: child.key,
+              ...child.val()
+            });
+          });
+        });
+      db.ref("holdings")
+        .orderByChild("owner")
+        .equalTo(this.$store.state.user)
+        .once("value", snapshot => {
+          snapshot.forEach(child => {
+            this.$store.commit("addHoldings", {
+              key: child.key,
+              ...child.val()
+            });
+          });
+        });
+    }
+  },
   created() {
-    this.$store.commit("clearAll");
-    db.ref("ShareList")
-      .orderByChild("owner")
-      .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
-        snapshot.forEach(child => {
-          this.$store.commit("addShareList", {
-            key: child.key,
-            ...child.val()
-          });
-        });
-      });
-    db.ref("invoice")
-      .orderByChild("owner")
-      .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
-        snapshot.forEach(child => {
-          this.$store.commit("addOrderList", {
-            key: child.key,
-            ...child.val()
-          });
-        });
-      });
-    db.ref("holdings")
-      .orderByChild("owner")
-      .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
-        snapshot.forEach(child => {
-          this.$store.commit("addHoldings", {
-            key: child.key,
-            ...child.val()
-          });
-        });
-      });
+    this.initializeData();
   },
   components: {
     AddBuy
