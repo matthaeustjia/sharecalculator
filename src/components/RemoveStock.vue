@@ -9,10 +9,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="share in shareList" :key="share.shareName">
+          <tr v-for="(share, index) in shareList" :key="share.shareName">
             <td>{{ share.shareName }}</td>
             <td class="text-right">
-              <v-btn @click="deleteStock(share)" small color="error">Delete</v-btn>
+              <v-btn @click="deleteStock(share, index)" small color="error">Delete</v-btn>
             </td>
           </tr>
         </tbody>
@@ -26,25 +26,18 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      shareList: []
+      shareList: this.$store.state.shareList
     };
   },
   methods: {
-    deleteStock(share) {
-      console.log(share.keys);
+    deleteStock(share, index) {
+      this.$store.commit("removeShareList", index);
       db.ref("ShareList")
         .child(share.key)
         .remove();
     }
   },
-  created() {
-    db.ref("ShareList")
-      .orderByChild("owner")
-      .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
-        this.shareList.push(snapshot.val());
-      });
-  }
+  created() {}
 };
 </script>
 

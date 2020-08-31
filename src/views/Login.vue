@@ -12,12 +12,7 @@
                 </v-toolbar>
                 <v-card-text>
                   <v-form @submit.prevent="signIn">
-                    <v-text-field
-                      prepend-icon="person"
-                      v-model="user"
-                      label="Login"
-                      type="text"
-                    ></v-text-field>
+                    <v-text-field prepend-icon="person" v-model="user" label="Login" type="text"></v-text-field>
                     <v-text-field
                       prepend-icon="lock"
                       v-model="password"
@@ -46,7 +41,7 @@ export default {
   data() {
     return {
       user: "",
-      password: "",
+      password: ""
     };
   },
   methods: {
@@ -57,11 +52,11 @@ export default {
         .then(() => {
           this.$store.commit("setUser", this.user), this.$router.push("/");
         })
-        .catch((error) => {
+        .catch(error => {
           alert(error.message);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -6,28 +6,32 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: "",
-    holdings: {}
+    holdings: {},
+    shareList: []
   },
   mutations: {
+    clearAll(state) {
+      state.holdings = {};
+      state.shareList = [];
+    },
+    removeShareList(state, index) {
+      state.shareList.splice(index, 1);
+    },
+    addShareList(state, share) {
+      state.shareList.push(share);
+    },
+    addHoldings(state, holdings) {
+      state.holdings[holdings.key] = holdings;
+    },
     setUser(state, user) {
       if (user == "logout") {
         state.user = null;
       } else {
         state.user = user.toLowerCase();
       }
-    },
-    setHoldings(state, holdings) {
-      if (state.holdings[holdings.shareName]) {
-        if (holdings.type == "buy") {
-          state.holdings[holdings.shareName].quantity += holdings.quantity;
-        } else {
-          state.holdings[holdings.shareName].quantity -= holdings.quantity;
-        }
-      } else {
-        state.holdings[holdings.shareName] = holdings;
-      }
     }
   },
+  getters: {},
   actions: {},
   modules: {}
 });

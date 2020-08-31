@@ -14,11 +14,7 @@ export default {
   name: "App",
 
   components: {
-    BottomNavigation,
-  },
-
-  data: () => ({
-    //
-  }),
+    BottomNavigation
+  }
 };
 </script>
