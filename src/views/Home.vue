@@ -31,6 +31,17 @@ export default {
           });
         });
       });
+    db.ref("invoice")
+      .orderByChild("owner")
+      .equalTo(this.$store.state.user)
+      .once("value", snapshot => {
+        snapshot.forEach(child => {
+          this.$store.commit("addOrderList", {
+            key: child.key,
+            ...child.val()
+          });
+        });
+      });
     db.ref("holdings")
       .orderByChild("owner")
       .equalTo(this.$store.state.user)

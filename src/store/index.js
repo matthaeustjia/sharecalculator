@@ -7,12 +7,14 @@ export default new Vuex.Store({
   state: {
     user: "",
     holdings: {},
-    shareList: []
+    shareList: [],
+    orderList: {}
   },
   mutations: {
     clearAll(state) {
       state.holdings = {};
       state.shareList = [];
+      state.orderList = {};
     },
     removeShareList(state, index) {
       state.shareList.splice(index, 1);
@@ -22,6 +24,9 @@ export default new Vuex.Store({
     },
     addHoldings(state, holdings) {
       state.holdings[holdings.key] = holdings;
+    },
+    addOrderList(state, orderList) {
+      state.orderList[orderList.key] = orderList;
     },
     setUser(state, user) {
       if (user == "logout") {

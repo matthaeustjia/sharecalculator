@@ -146,7 +146,7 @@ export default {
       startDateModal: false,
       endDateModal: false,
       shareName: "",
-      orderList: {},
+      orderList: this.$store.state.orderList,
       shareList: this.$store.state.shareList,
       orderHistory: []
     };
@@ -223,16 +223,6 @@ export default {
         );
       }
     }
-  },
-  created() {
-    db.ref("invoice")
-      .orderByChild("owner")
-      .equalTo(this.$store.state.user)
-      .once("value", snapshot => {
-        snapshot.forEach(child => {
-          this.orderList[child.key] = { key: child.key, ...child.val() };
-        });
-      });
   }
 };
 </script>
