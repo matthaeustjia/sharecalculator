@@ -100,7 +100,7 @@
                           <td>
                             ${{
                             (history.price * history.quantity)
-                            .toFixed(3)a
+                            .toFixed(3)
                             .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                             }}
                           </td>
@@ -155,7 +155,7 @@ export default {
   computed: {
     totalTax() {
       if (this.totalProfit > 0)
-        return parseFloat(this.totalProfit * 0.325).toFixed(3)a;
+        return parseFloat(this.totalProfit * 0.325).toFixed(3);
       else return 0;
     },
     totalBrokerageFee() {
@@ -163,7 +163,7 @@ export default {
       for (let i = 0; i < this.orderHistory.length; i++) {
         totalBrokerageFee += parseFloat(this.orderHistory[i].brokerageFee);
       }
-      return parseFloat(totalBrokerageFee).toFixed(3)a;
+      return parseFloat(totalBrokerageFee).toFixed(3);
     },
     totalBuy() {
       let totalBuy = 0;
@@ -188,10 +188,12 @@ export default {
       return totalSell;
     },
     totalProfit() {
-      return parseFloat(this.totalSell - this.totalBuy - this.totalBrokerageFee).toFixed(3);
+      return parseFloat(
+        this.totalSell - this.totalBuy - this.totalBrokerageFee
+      ).toFixed(3);
     },
     totalProfitAfterTax() {
-      return parseFloat(this.totalProfit - this.totalTax).toFixed(3)a;
+      return parseFloat(this.totalProfit - this.totalTax).toFixed(3);
     }
   },
   methods: {
