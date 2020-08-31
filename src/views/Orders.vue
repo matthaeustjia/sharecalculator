@@ -115,7 +115,7 @@
                             }}
                           </td>
                           <td class="text-right">
-                            <v-btn @click="deleteOrder(history.key)" small color="error">Delete</v-btn>
+                            <v-btn @click="deleteOrder(history)" small color="error">Delete</v-btn>
                           </td>
                         </tr>
                       </tbody>
@@ -143,6 +143,7 @@ export default {
       widgets: false,
       startDate: "",
       endDate: "",
+      holdings: this.$store.state.holdings,
       startDateModal: false,
       endDateModal: false,
       shareName: "",
@@ -194,9 +195,32 @@ export default {
     }
   },
   methods: {
-    deleteOrder(key) {
+    deleteOrder(history) {
+      var currentHolding = history.shareName + this.$store.state.user;
+      var currentHoldingQuantity = this.holdings[currentHolding].quantity;
+
+      if (history.type == "buy") {
+        db.ref("holdings")
+          .child(history.shareName + this.$store.state.user)
+          .set({
+            shareName: history.shareName,
+            quantity:
+              parseInt(currentHoldingQuantity) - parseInt(history.quantity),
+            owner: this.$store.state.user
+          });
+      } else {
+        db.ref("holdings")
+          .child(history.shareName + this.$store.state.user)
+          .set({
+            shareName: history.shareName,
+            quantity:
+              parseInt(currentHoldingQuantity) + parseInt(history.quantity),
+            owner: this.$store.state.user
+          });
+      }
+
       db.ref("invoice")
-        .child(key)
+        .child(history.key)
         .remove();
     },
     getOrders() {

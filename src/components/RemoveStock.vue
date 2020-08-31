@@ -32,9 +32,7 @@ export default {
   methods: {
     deleteStock(share, index) {
       this.$store.commit("removeShareList", index);
-      db.ref("ShareList")
-        .child(share.key)
-        .remove();
+      db.ref("ShareList").remove();
     }
   },
   created() {}

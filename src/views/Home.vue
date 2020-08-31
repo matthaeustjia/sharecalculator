@@ -45,7 +45,7 @@ export default {
     db.ref("holdings")
       .orderByChild("owner")
       .equalTo(this.$store.state.user)
-      .on("value", snapshot => {
+      .once("value", snapshot => {
         snapshot.forEach(child => {
           this.$store.commit("addHoldings", {
             key: child.key,
