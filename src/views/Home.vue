@@ -33,7 +33,12 @@ export default {
           });
         });
       db.ref("sharePrice").once("value", snapshot => {
-        this.$store.commit("addSharePrice", snapshot.val());
+        snapshot.forEach(child => {
+          this.$store.commit("addSharePrice", {
+            key: child.key,
+            ...child.val()
+          });
+        });
       });
       db.ref("invoice")
         .orderByChild("owner")

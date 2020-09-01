@@ -9,16 +9,17 @@ export default new Vuex.Store({
     holdings: [],
     shareList: [],
     orderList: {},
-    sharePrice: [],
+    sharePrice: []
   },
   mutations: {
     clearAll(state) {
       state.holdings = [];
       state.shareList = [];
       state.orderList = {};
+      state.sharePrice = [];
     },
     addSharePrice(state, share) {
-      state.sharePrice = share;
+      state.sharePrice.push(share);
     },
     removeShareList(state, index) {
       state.shareList.splice(index, 1);
@@ -38,13 +39,13 @@ export default new Vuex.Store({
       } else {
         state.user = user.toLowerCase();
       }
-    },
+    }
   },
   getters: {
     isNotEmptyHoldings(state) {
-      return state.holdings.filter((share) => share.quantity > 0);
-    },
+      return state.holdings.filter(share => share.quantity > 0);
+    }
   },
   actions: {},
-  modules: {},
+  modules: {}
 });
