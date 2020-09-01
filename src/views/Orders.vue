@@ -198,9 +198,10 @@ export default {
   },
   methods: {
     deleteOrder(history) {
-      var currentHolding = history.shareName + this.$store.state.user;
-      var currentHoldingQuantity = this.holdings[currentHolding].quantity;
-
+      let currentHolding = this.holdings.find(
+        share => share.shareName === history.shareName
+      );
+      let currentHoldingQuantity = currentHolding.quantity;
       if (history.type == "buy") {
         db.ref("holdings")
           .child(history.shareName + this.$store.state.user)

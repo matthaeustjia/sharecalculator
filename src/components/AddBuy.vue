@@ -70,8 +70,11 @@ export default {
   },
   methods: {
     calculateHoldings() {
-      let currentHolding = this.shareName + this.$store.state.user;
-      if (!this.holdings[currentHolding]) {
+      let currentHolding = this.holdings.find(
+        share => share.shareName === this.shareName
+      );
+      console.log(currentHolding);
+      if (!currentHolding) {
         db.ref("holdings")
           .child(this.shareName + this.$store.state.user)
           .set({
@@ -80,7 +83,7 @@ export default {
             owner: this.$store.state.user
           });
       } else {
-        let currentHoldingQuantity = this.holdings[currentHolding].quantity;
+        let currentHoldingQuantity = currentHolding.quantity;
         if (this.type == "buy") {
           db.ref("holdings")
             .child(this.shareName + this.$store.state.user)
