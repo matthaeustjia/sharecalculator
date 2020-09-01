@@ -12,11 +12,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="holding in holdings" :key="holding.shareName">
+          <tr v-for="holding in isNotEmptyHoldings" :key="holding.shareName">
             <td>{{ holding.shareName }}</td>
             <td>{{ holding.quantity }}</td>
             <td>150</td>
             <td>150</td>
+            <v-btn @click="getStockPrice()">GET DATA</v-btn>
           </tr>
         </tbody>
       </template>
@@ -25,10 +26,22 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  methods: {
+    getStockPrice() {
+      axios
+        .get(
+          "http://api.marketstack.com/v1/eod?access_key=5d4a2a7d1a39e3a6e78c679405d86611&symbols=KGN.XASX&fbclid=IwAR2QlXIujN1jbxYHqoM-w-YkpO2WcPxjmbtwRpin8N7GYKdAFzp9LWsiYtc"
+        )
+        .then(response => (this.price = response));
+    }
+  },
   data() {
     return {
-      holdings: this.$store.state.holdings
+      price: "",
+      holdings: this.$store.state.holdings,
+      isNotEmptyHoldings: this.$store.state.isNotEmptyHoldings
     };
   }
 };

@@ -32,6 +32,9 @@ export default {
             });
           });
         });
+      db.ref("sharePrice").once("value", snapshot => {
+        this.$store.commit("addSharePrice", snapshot.val());
+      });
       db.ref("invoice")
         .orderByChild("owner")
         .equalTo(this.$store.state.user)
@@ -48,10 +51,7 @@ export default {
         .equalTo(this.$store.state.user)
         .once("value", snapshot => {
           snapshot.forEach(child => {
-            this.$store.commit("addHoldings", {
-              key: child.key,
-              ...child.val()
-            });
+            this.$store.commit("addHoldings", child.val());
           });
         });
     }
