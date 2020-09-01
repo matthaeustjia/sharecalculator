@@ -13,26 +13,16 @@
         totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-title>
-      <v-list-item-subtitle>
-        Buy ${{
-        totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
-      <v-list-item-subtitle>
-        Sell ${{
-        totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
+      <v-list-item-subtitle>Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
+      <v-list-item-subtitle>Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
       <v-list-item-subtitle class="bg-red">
         Fee ${{
         totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-subtitle>
-      <v-list-item-subtitle class="bg-red">
-        Tax ${{
-        totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
+      <v-list-item-subtitle
+        class="bg-red"
+      >Tax ${{ totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
     </v-list-item-content>
     <v-simple-table dense>
       <template v-slot:default>
@@ -90,8 +80,6 @@ export default {
       var endYear = date.getFullYear() + 1;
       var firstDay = new Date(startYear, 6, 1).setHours(0, 0, 0, 0);
       var lastDay = new Date(endYear, 5, 30).setHours(23, 59, 59, 999);
-      console.log(firstDay);
-      console.log(lastDay);
       return Object.values(this.orderList).filter(
         history => history.date > firstDay && history.date < lastDay
       );
