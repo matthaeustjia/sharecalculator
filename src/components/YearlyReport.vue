@@ -88,8 +88,10 @@ export default {
       var date = new Date();
       var startYear = date.getFullYear();
       var endYear = date.getFullYear() + 1;
-      var firstDay = new Date(startYear, 7, 1).setHours(0, 0, 0, 0);
-      var lastDay = new Date(endYear, 6, 30).setHours(23, 59, 59, 999);
+      var firstDay = new Date(startYear, 6, 1).setHours(0, 0, 0, 0);
+      var lastDay = new Date(endYear, 5, 30).setHours(23, 59, 59, 999);
+      console.log(firstDay);
+      console.log(lastDay);
       return Object.values(this.orderList).filter(
         history => history.date > firstDay && history.date < lastDay
       );
