@@ -18,3 +18,11 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.bg-red {
+  background-color: red;
+}
+.bg-green {
+  background-color: green;
+}
+</style>

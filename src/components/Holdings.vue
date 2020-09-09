@@ -18,7 +18,9 @@
             <td>{{ getTotalQuantity(value) }}</td>
             <td>${{ getAveragePrice(value) }}</td>
             <td>${{ getTotalPaid(value) }}</td>
-            <td>${{ getDifference(value) }}</td>
+            <td
+              :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'"
+            >${{ getDifference(value) }}</td>
             <td></td>
           </tr>
         </tbody>
