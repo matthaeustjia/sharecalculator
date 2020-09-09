@@ -6,16 +6,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     user: "",
-    holdings: [],
     shareList: [],
     orderList: {},
     sharePrice: []
   },
   mutations: {
     clearAll(state) {
-      state.holdings = [];
       state.shareList = [];
-      state.orderList = {};
+      state.orderList = [];
       state.sharePrice = [];
     },
     addSharePrice(state, share) {
@@ -27,11 +25,8 @@ export default new Vuex.Store({
     addShareList(state, share) {
       state.shareList.push(share);
     },
-    addHoldings(state, holdings) {
-      state.holdings.push(holdings);
-    },
     addOrderList(state, orderList) {
-      state.orderList[orderList.key] = orderList;
+      state.orderList.push(orderList);
     },
     setUser(state, user) {
       if (user == "logout") {
@@ -42,8 +37,11 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    isNotEmptyHoldings(state) {
-      return state.holdings.filter(share => share.quantity > 0);
+    isSold(state) {
+      return state.orderList.filter(share => share.isSold);
+    },
+    isNotSold(state) {
+      return state.orderList.filter(share => share.isSold === false);
     }
   },
   actions: {},

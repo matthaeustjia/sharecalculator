@@ -13,26 +13,16 @@
         totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-title>
-      <v-list-item-subtitle>
-        Buy ${{
-        totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
-      <v-list-item-subtitle>
-        Sell ${{
-        totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
+      <v-list-item-subtitle>Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
+      <v-list-item-subtitle>Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
       <v-list-item-subtitle class="bg-red">
         Fee ${{
         totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-subtitle>
-      <v-list-item-subtitle class="bg-red">
-        Tax ${{
-        totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
+      <v-list-item-subtitle
+        class="bg-red"
+      >Tax ${{ totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}</v-list-item-subtitle>
     </v-list-item-content>
     <v-simple-table dense>
       <template v-slot:default>
@@ -80,7 +70,7 @@
 export default {
   data() {
     return {
-      orderList: this.$store.state.orderList
+      orderList: this.$store.getters.isSold
     };
   },
   computed: {

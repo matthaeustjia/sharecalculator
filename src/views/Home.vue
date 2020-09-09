@@ -51,14 +51,6 @@ export default {
             });
           });
         });
-      db.ref("holdings")
-        .orderByChild("owner")
-        .equalTo(this.$store.state.user)
-        .once("value", snapshot => {
-          snapshot.forEach(child => {
-            this.$store.commit("addHoldings", child.val());
-          });
-        });
     }
   },
   created() {
