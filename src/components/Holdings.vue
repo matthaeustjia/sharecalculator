@@ -57,7 +57,8 @@ export default {
     getTotalQuantity(shareName) {
       let quantity = 0;
       for (let i = 0; i < this.groups[shareName].length; i++) {
-        quantity += parseInt(this.groups.[shareName][i].quantity);
+        if(this.groups.[shareName][i].type == 'buy') quantity += parseInt(this.groups.[shareName][i].quantity);
+      else quantity -= parseInt(this.groups.[shareName][i].quantity);
       }
       return quantity
     },

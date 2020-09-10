@@ -29,7 +29,7 @@
                     min="1"
                     step="1"
                   ></v-text-field>
-                  <span v-if="type == 'sell'">
+                  <span v-if="type == 'sell' && shareName">
                     Available to sell: {{ this.ownedShare }} units
                   </span>
                   <v-text-field
@@ -80,6 +80,7 @@ export default {
   methods: {
     addToDatabase() {
       let brokerageFee;
+      let isSold = false;
       if (this.broker == "SelfWealth") {
         brokerageFee = 9.5;
       } else {
@@ -93,6 +94,14 @@ export default {
           brokerageFee = this.total * 0.0012;
         }
       }
+      if(this.type == "sell"){
+        if(this.quantity - this.ownedShare == 0 ){
+        isSold = true;
+        for (let i=0; i<this.groups[this.shareName].length; i++){
+          db.ref("invoice").child(this.groups[this.shareName][i].key).update({"isSold" : true})
+        }}
+
+      }
       db.ref("invoice").push({
         shareName: this.shareName,
         price: this.price,
@@ -100,7 +109,7 @@ export default {
         quantity: this.quantity,
         brokerageFee: brokerageFee.toFixed(2),
         date: this.date,
-        isSold: false,
+        isSold: isSold,
         owner: this.$store.state.user,
       });
       this.price = "";
@@ -130,7 +139,8 @@ export default {
       if (this.groups[this.shareName]) {
         for (let i = 0; i < this.groups[this.shareName].length; i++)
         {
-        quantity += parseInt(this.groups.[this.shareName][i].quantity);
+        if(this.groups.[this.shareName][i].type == 'buy')  quantity += parseInt(this.groups.[this.shareName][i].quantity);
+        else quantity -= parseInt(this.groups.[this.shareName][i].quantity)
         }
       }
       return quantity;
