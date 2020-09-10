@@ -29,7 +29,9 @@
                     min="1"
                     step="1"
                   ></v-text-field>
-
+                  <span v-if="type == 'sell'">
+                    Available to sell: {{ this.ownedShare }} units
+                  </span>
                   <v-text-field
                     v-model="price"
                     label="Price"
@@ -68,13 +70,11 @@ export default {
   data() {
     return {
       brokerList: ["SelfWealth", "Commsec"],
-      holdings: this.$store.state.holdings,
       shareName: "",
-      shareList: this.$store.state.shareList,
       price: "",
       quantity: "",
       broker: "SelfWealth",
-      date: Date.now()
+      date: Date.now(),
     };
   },
   methods: {
@@ -101,24 +101,41 @@ export default {
         brokerageFee: brokerageFee.toFixed(2),
         date: this.date,
         isSold: false,
-        owner: this.$store.state.user
+        owner: this.$store.state.user,
       });
       this.price = "";
       this.quantity = "";
       setTimeout(() => this.$router.push("/recent"), 1000);
       this.$parent.initializeData();
-    }
+    },
   },
   props: ["type"],
   computed: {
+    shareList(){
+      return  this.$store.state.shareList
+    },
+    groups() {
+      return this.$store.getters.groups;
+    },
     isValid() {
-      if (this.shareName && this.price && this.quantity) return true;
-      else return false;
+      if (!this.shareName || !this.price || !this.quantity) return false;
+      if(this.type == 'sell' && this.quantity > this.ownedShare) return false;
+      else return true;
     },
     total() {
       return this.price * this.quantity;
-    }
-  }
+    },
+    ownedShare() {
+      let quantity = 0;
+      if (this.groups[this.shareName]) {
+        for (let i = 0; i < this.groups[this.shareName].length; i++)
+        {
+        quantity += parseInt(this.groups.[this.shareName][i].quantity);
+        }
+      }
+      return quantity;
+    },
+  },
 };
 </script>
 

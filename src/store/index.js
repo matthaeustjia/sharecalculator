@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import _ from "lodash";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -7,7 +9,7 @@ export default new Vuex.Store({
     user: "",
     shareList: [],
     orderList: {},
-    sharePrice: []
+    sharePrice: [],
   },
   mutations: {
     clearAll(state) {
@@ -33,16 +35,20 @@ export default new Vuex.Store({
       } else {
         state.user = user.toLowerCase();
       }
-    }
+    },
   },
   getters: {
     isSold(state) {
-      return state.orderList.filter(share => share.isSold);
+      return state.orderList.filter((share) => share.isSold);
     },
     isNotSold(state) {
-      return state.orderList.filter(share => share.isSold === false);
-    }
+      return state.orderList.filter((share) => share.isSold === false);
+    },
+    groups(state, getters) {
+      let grouped = _.groupBy(getters.isNotSold, "shareName");
+      return grouped;
+    },
   },
   actions: {},
-  modules: {}
+  modules: {},
 });

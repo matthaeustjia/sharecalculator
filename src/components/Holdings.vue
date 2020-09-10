@@ -18,9 +18,9 @@
             <td>{{ getTotalQuantity(value) }}</td>
             <td>${{ getAveragePrice(value) }}</td>
             <td>${{ getSharePrice(value) }}</td>
-            <td
-              :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'"
-            >${{ getDifference(value) }}</td>
+            <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
+              ${{ getDifference(value) }}
+            </td>
             <td></td>
           </tr>
         </tbody>
@@ -61,26 +61,11 @@ export default {
       }
       return quantity
     },
-    groupBy(array, key) {
-      const result = {};
-      array.forEach(item => {
-        if (!result[item[key]]) {
-          result[item[key]] = [];
-        }
-        result[item[key]].push(item);
-      });
-      return result;
-    }
-  },
-  computed: {
-    groups() {
-      return this.groupBy(this.holdings, "shareName");
-    },
-
   },
   data() {
     return {
       price: "",
+      groups: this.$store.getters.groups,
       sharePrice: this.$store.state.sharePrice,
       holdings: this.$store.getters.isNotSold
     };
