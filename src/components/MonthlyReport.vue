@@ -8,11 +8,6 @@
         totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-title>
-      <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
-        NPAT ${{
-        totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-title>
       <v-list-item-subtitle>
         Buy ${{
         totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -24,13 +19,8 @@
         }}
       </v-list-item-subtitle>
       <v-list-item-subtitle class="bg-red">
-        Fee ${{
+        Fees ${{
         totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
-      <v-list-item-subtitle class="bg-red">
-        Tax ${{
-        totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-subtitle>
     </v-list-item-content>
@@ -58,7 +48,7 @@
               .replace(/\d(?=(\d{3})+\.)/g, "$&,")
               }}
             </td>
-            <td>{{ history.brokerageFee }}</td>
+            <td>+${{ history.brokerageFee }}</td>
 
             <td>
               {{

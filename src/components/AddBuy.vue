@@ -5,11 +5,9 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
-              <v-toolbar dark color="red">
+              <v-toolbar>
                 <v-toolbar-title class="capitalised">
-                  {{
-                  type
-                  }}
+                  {{ type }}
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
               </v-toolbar>
@@ -32,7 +30,12 @@
                     step="1"
                   ></v-text-field>
 
-                  <v-text-field v-model="price" label="Price" required type="number"></v-text-field>
+                  <v-text-field
+                    v-model="price"
+                    label="Price"
+                    required
+                    type="number"
+                  ></v-text-field>
 
                   <v-select
                     v-model="broker"
@@ -41,7 +44,13 @@
                     item-text="shareName"
                     required
                   ></v-select>
-                  <v-btn type="subit" color="success" :disabled="!isValid" class="mr-4">{{ type }}</v-btn>
+                  <v-btn
+                    type="submit"
+                    color="success"
+                    :disabled="!isValid"
+                    class="mr-4"
+                    >{{ type }}</v-btn
+                  >
                 </v-form>
               </v-card-text>
             </v-card>
@@ -69,44 +78,7 @@ export default {
     };
   },
   methods: {
-    calculateHoldings() {
-      let currentHolding = this.holdings.find(
-        share => share.shareName === this.shareName
-      );
-      console.log(currentHolding);
-      if (!currentHolding) {
-        db.ref("holdings")
-          .child(this.shareName + this.$store.state.user)
-          .set({
-            shareName: this.shareName,
-            quantity: parseInt(this.quantity),
-            owner: this.$store.state.user
-          });
-      } else {
-        let currentHoldingQuantity = currentHolding.quantity;
-        if (this.type == "buy") {
-          db.ref("holdings")
-            .child(this.shareName + this.$store.state.user)
-            .set({
-              shareName: this.shareName,
-              quantity:
-                parseInt(currentHoldingQuantity) + parseInt(this.quantity),
-              owner: this.$store.state.user
-            });
-        } else {
-          db.ref("holdings")
-            .child(this.shareName + this.$store.state.user)
-            .set({
-              shareName: this.shareName,
-              quantity:
-                parseInt(currentHoldingQuantity) - parseInt(this.quantity),
-              owner: this.$store.state.user
-            });
-        }
-      }
-    },
     addToDatabase() {
-      this.calculateHoldings();
       let brokerageFee;
       if (this.broker == "SelfWealth") {
         brokerageFee = 9.5;
@@ -128,6 +100,7 @@ export default {
         quantity: this.quantity,
         brokerageFee: brokerageFee.toFixed(2),
         date: this.date,
+        isSold: false,
         owner: this.$store.state.user
       });
       this.price = "";

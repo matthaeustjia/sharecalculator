@@ -8,7 +8,7 @@
             <th class="text-left">Name</th>
             <th class="text-left">Quantity</th>
             <th class="text-left">Price</th>
-            <th class="text-left">Total Paid</th>
+            <th class="text-left">Current Price</th>
             <th class="text-left">Difference</th>
           </tr>
         </thead>
@@ -17,7 +17,7 @@
             <td>{{ value }}</td>
             <td>{{ getTotalQuantity(value) }}</td>
             <td>${{ getAveragePrice(value) }}</td>
-            <td>${{ getTotalPaid(value) }}</td>
+            <td>${{ getSharePrice(value) }}</td>
             <td
               :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'"
             >${{ getDifference(value) }}</td>

@@ -198,30 +198,6 @@ export default {
   },
   methods: {
     deleteOrder(history) {
-      let currentHolding = this.holdings.find(
-        share => share.shareName === history.shareName
-      );
-      let currentHoldingQuantity = currentHolding.quantity;
-      if (history.type == "buy") {
-        db.ref("holdings")
-          .child(history.shareName + this.$store.state.user)
-          .set({
-            shareName: history.shareName,
-            quantity:
-              parseInt(currentHoldingQuantity) - parseInt(history.quantity),
-            owner: this.$store.state.user
-          });
-      } else {
-        db.ref("holdings")
-          .child(history.shareName + this.$store.state.user)
-          .set({
-            shareName: history.shareName,
-            quantity:
-              parseInt(currentHoldingQuantity) + parseInt(history.quantity),
-            owner: this.$store.state.user
-          });
-      }
-
       db.ref("invoice")
         .child(history.key)
         .remove();
