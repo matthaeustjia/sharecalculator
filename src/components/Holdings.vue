@@ -33,7 +33,7 @@
 export default {
   methods: {
     getDifference(shareName){
-      return parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid(shareName))
+      return parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName))
     },
     getCurrentValue(shareName){
       return parseFloat(this.getSharePrice(shareName)*this.getTotalQuantity(shareName))
@@ -50,7 +50,9 @@ export default {
     getTotalPaid(shareName) {
       let totalValue = 0;
       for (let i = 0; i < this.groups[shareName].length; i++) {
-        totalValue += parseFloat(this.groups.[shareName][i].price*this.groups.[shareName][i].quantity);
+        if(this.groups.[shareName][i].type == 'buy') totalValue += parseFloat(this.groups.[shareName][i].price*this.groups.[shareName][i].quantity);
+        else totalValue -= parseFloat(this.groups.[shareName][i].price*this.groups.[shareName][i].quantity)
+
       }
       return totalValue
     },

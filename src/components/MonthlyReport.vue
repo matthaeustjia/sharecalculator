@@ -5,22 +5,18 @@
       <v-divider></v-divider>
       <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
         Profit ${{
-        totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-title>
       <v-list-item-subtitle>
-        Buy ${{
-        totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
+        Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
       </v-list-item-subtitle>
       <v-list-item-subtitle>
-        Sell ${{
-        totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
+        Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
       </v-list-item-subtitle>
       <v-list-item-subtitle class="bg-red">
         Fees ${{
-        totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-subtitle>
     </v-list-item-content>
@@ -37,26 +33,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="history in orderHistory.slice().reverse()" :key="history.name">
-            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">{{ history.shareName }}</td>
+          <tr
+            v-for="history in orderHistory.slice().reverse()"
+            :key="history.name"
+          >
+            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">
+              {{ history.shareName }}
+            </td>
             <td>${{ history.price }}</td>
             <td>{{ history.quantity }}</td>
             <td>
               ${{
-              (history.price * history.quantity)
-              .toFixed(3)
-              .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                (history.price * history.quantity)
+                  .toFixed(3)
+                  .replace(/\d(?=(\d{3})+\.)/g, "$&,")
               }}
             </td>
             <td>+${{ history.brokerageFee }}</td>
 
             <td>
               {{
-              new Date(history.date).toLocaleDateString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit"
-              })
+                new Date(history.date).toLocaleDateString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
               }}
             </td>
           </tr>
@@ -68,12 +69,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      orderList: this.$store.getters.isSold
-    };
-  },
   computed: {
+    orderList() {
+      return this.$store.getters.isSold;
+    },
     orderHistory() {
       var date = new Date(),
         y = date.getFullYear(),
@@ -81,7 +80,7 @@ export default {
       var firstDay = new Date(y, m, 1).setHours(0, 0, 0, 0);
       var lastDay = new Date(y, m + 1, 0).setHours(23, 59, 59, 999);
       return Object.values(this.orderList).filter(
-        history => history.date > firstDay && history.date < lastDay
+        (history) => history.date > firstDay && history.date < lastDay
       );
     },
     totalTax() {
@@ -125,7 +124,7 @@ export default {
     },
     totalProfitAfterTax() {
       return parseFloat(this.totalProfit - this.totalTax).toFixed(3);
-    }
-  }
+    },
+  },
 };
 </script>
