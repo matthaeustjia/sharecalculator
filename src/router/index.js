@@ -13,15 +13,15 @@ const routes = [{
     }
   },
   {
-    path: "/recent",
-    name: "recentorder",
+    path: "/add",
+    name: "AddStock",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(
         /* webpackChunkName: "RecentOrders" */
-        "../views/RecentOrders.vue"
+        "../views/AddStock.vue"
       ),
     meta: {
       requiresAuth: true

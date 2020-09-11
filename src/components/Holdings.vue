@@ -21,7 +21,6 @@
             <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
               ${{ getDifference(value) }}
             </td>
-            <td></td>
           </tr>
         </tbody>
       </template>
@@ -72,7 +71,7 @@ export default {
       sharePrice: this.$store.state.sharePrice,
       holdings: this.$store.getters.isNotSold
     };
-  }
+  },
 };
 </script>
 

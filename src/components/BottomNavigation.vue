@@ -1,11 +1,11 @@
 <template>
   <v-bottom-navigation v-if="user" app color="teal">
     <v-btn to="/">
-      <v-icon>add_shopping_cart</v-icon>
+      <v-icon>history</v-icon>
     </v-btn>
 
-    <v-btn to="/recent">
-      <v-icon>history</v-icon>
+    <v-btn to="/add">
+      <v-icon>add_shopping_cart</v-icon>
     </v-btn>
 
     <v-btn to="/orders">

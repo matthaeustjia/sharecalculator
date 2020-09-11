@@ -1,36 +1,24 @@
 <template>
   <div>
     <v-list-item-content>
-      <v-list-item-title>Yearly Report</v-list-item-title>
+      <v-list-item-title class="capitalize"
+        >{{ type }} report</v-list-item-title
+      >
       <v-divider></v-divider>
       <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
         Profit ${{
-        totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-title>
-      <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
-        NPAT ${{
-        totalProfitAfterTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-title>
       <v-list-item-subtitle>
-        Buy ${{
-        totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
+        Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
       </v-list-item-subtitle>
       <v-list-item-subtitle>
-        Sell ${{
-        totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
+        Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
       </v-list-item-subtitle>
       <v-list-item-subtitle class="bg-red">
-        Fee ${{
-        totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
-      </v-list-item-subtitle>
-      <v-list-item-subtitle class="bg-red">
-        Tax ${{
-        totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        Fees ${{
+          totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
       </v-list-item-subtitle>
     </v-list-item-content>
@@ -47,26 +35,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="history in orderHistory.slice().reverse()" :key="history.name">
-            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">{{ history.shareName }}</td>
+          <tr
+            v-for="history in orderHistory.slice().reverse()"
+            :key="history.name"
+          >
+            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">
+              {{ history.shareName }}
+            </td>
             <td>${{ history.price }}</td>
             <td>{{ history.quantity }}</td>
             <td>
               ${{
-              (history.price * history.quantity)
-              .toFixed(3)
-              .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                (history.price * history.quantity)
+                  .toFixed(3)
+                  .replace(/\d(?=(\d{3})+\.)/g, "$&,")
               }}
             </td>
-            <td>{{ history.brokerageFee }}</td>
+            <td>+${{ history.brokerageFee }}</td>
 
             <td>
               {{
-              new Date(history.date).toLocaleDateString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit"
-              })
+                new Date(history.date).toLocaleDateString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
               }}
             </td>
           </tr>
@@ -78,14 +71,16 @@
 
 <script>
 export default {
-  data() {
-    return {
-      orderList: this.$store.state.orderList
-    };
-  },
   computed: {
+    orderList() {
+      return this.$store.getters.isSold;
+    },
     orderHistory() {
-      return Object.values(this.orderList);
+      return Object.values(this.orderList).filter(
+        (history) =>
+          history.date > this.dateRanges.firstDay &&
+          history.date < this.dateRanges.lastDay
+      );
     },
     totalTax() {
       if (this.totalProfit > 0)
@@ -128,16 +123,14 @@ export default {
     },
     totalProfitAfterTax() {
       return parseFloat(this.totalProfit - this.totalTax).toFixed(3);
-    }
-  }
+    },
+  },
+  props: ["dateRanges", "type"],
 };
 </script>
 
 <style lang="scss" scoped>
-.bg-red {
-  background-color: red;
-}
-.bg-green {
-  background-color: green;
+.capitalize {
+  text-transform: capitalize;
 }
 </style>

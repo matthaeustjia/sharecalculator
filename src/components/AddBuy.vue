@@ -39,6 +39,14 @@
                     type="number"
                   ></v-text-field>
 
+                  <v-text-field
+                    v-if="isValid"
+                    v-model="totalValue"
+                    label="Total Value"
+                    readonly
+                    type="number"
+                  ></v-text-field>
+
                   <v-select
                     v-model="broker"
                     label="Broker"
@@ -114,12 +122,14 @@ export default {
       });
       this.price = "";
       this.quantity = "";
-      setTimeout(() => this.$router.push("/recent"), 1000);
-      this.$parent.initializeData();
+      setTimeout(() => this.$router.push("/"), 1000);
     },
   },
   props: ["type"],
   computed: {
+    totalValue(){
+      return parseFloat(this.quantity * this.price);
+    },
     shareList(){
       return  this.$store.state.shareList
     },
