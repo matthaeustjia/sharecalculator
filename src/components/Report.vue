@@ -103,7 +103,7 @@ export default {
           );
         }
       }
-      return totalBuy;
+      return totalBuy.toFixed(3);
     },
     totalSell() {
       let totalSell = 0;
@@ -114,7 +114,7 @@ export default {
           );
         }
       }
-      return totalSell;
+      return totalSell.toFixed(3);
     },
     totalProfit() {
       return parseFloat(

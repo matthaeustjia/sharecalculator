@@ -32,7 +32,7 @@
 export default {
   methods: {
     getDifference(shareName){
-      return parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName))
+      return parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName)).toFixed(3);
     },
     getCurrentValue(shareName){
       return parseFloat(this.getSharePrice(shareName)*this.getTotalQuantity(shareName))
@@ -41,10 +41,10 @@ export default {
       let getSharePriceByName = this.sharePrice.find(
         share => share.shareName == shareName
       );
-      return getSharePriceByName.price;
+      return getSharePriceByName.price.toFixed(3);;
     },
     getAveragePrice(shareName){
-      return parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName))
+      return parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName)).toFixed(3);
     },
     getTotalPaid(shareName) {
       let totalValue = 0;
@@ -53,7 +53,7 @@ export default {
         else totalValue -= parseFloat(this.groups.[shareName][i].price*this.groups.[shareName][i].quantity)
 
       }
-      return totalValue
+      return totalValue.toFixed(3);
     },
     getTotalQuantity(shareName) {
       let quantity = 0;
