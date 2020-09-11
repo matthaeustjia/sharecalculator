@@ -25,6 +25,11 @@
         </tbody>
       </template>
     </v-simple-table>
+
+    Total Difference
+    <span :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
+      ${{ getTotalDifference }}
+    </span>
   </div>
 </template>
 
@@ -72,6 +77,15 @@ export default {
       holdings: this.$store.getters.isNotSold
     };
   },
+  computed:{
+    getTotalDifference(){
+      let totalDifference = 0;
+      Object.keys(this.groups).forEach(holding => {
+        totalDifference += parseFloat(this.getDifference(holding))
+      });
+      return totalDifference;
+    },
+  }
 };
 </script>
 

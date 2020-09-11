@@ -7,7 +7,7 @@
       <v-tab @click="type = 'holdings'">Holdings</v-tab>
     </v-tabs>
     <Holdings v-if="type == 'holdings'" />
-    <Report v-bind:type="type" v-bind:dateRanges="dateRanges" />
+    <Report v-else v-bind:type="type" v-bind:dateRanges="dateRanges" />
   </div>
 </template>
 
