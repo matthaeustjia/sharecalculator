@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-tabs fixed-tabs dark>
-      <v-tab @click="type = 'daily'">Daily</v-tab>
+      <v-tab @click="type = 'weekly'">Weekly</v-tab>
       <v-tab @click="type = 'monthly'">Monthly</v-tab>
       <v-tab @click="type = 'yearly'">Yearly</v-tab>
       <v-tab @click="type = 'holdings'">Holdings</v-tab>
@@ -20,7 +20,7 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      type: "monthly",
+      type: "weekly",
       sharePrice: this.$store.state.sharePrice
     };
   },
@@ -31,11 +31,11 @@ export default {
         let lastDay;
         let y = date.getFullYear();
         let m = date.getMonth();
-        let d = date.getDay();
-        if(this.type == 'daily')
+        let w = date.getDate() - date.getDay()+1; // First day is the day of the month - the day of the week
+        if(this.type == 'weekly')
         {
-        firstDay = new Date(y, m, d).setHours(0, 0, 0, 0);
-        lastDay = new Date(y, m, d).setHours(23, 59, 59, 999);
+        firstDay = new Date(date.setDate(w)).setHours(0,0,0,0)
+        lastDay = new Date(date.setDate(w+6)).setHours(23, 59, 59, 999)
         }
         else if(this.type == 'monthly')
         {
