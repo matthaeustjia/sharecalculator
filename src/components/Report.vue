@@ -1,76 +1,72 @@
 <template>
   <div>
-    <v-list-item-content>
-      <v-list-item-title class="capitalize"
-        >{{ type }} report</v-list-item-title
+    <v-card>
+      <v-card-title class="capitalize">
+        {{ type }} report
+        <v-spacer></v-spacer>
+      </v-card-title>
+      <v-card-subtitle>
+        {{ new Date(dateRanges.firstDay).toLocaleDateString() }} -
+        {{ new Date(dateRanges.lastDay).toLocaleDateString() }}</v-card-subtitle
       >
-      <v-divider></v-divider>
-      <v-list-item-title :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+      <v-card-subtitle :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
         Profit ${{
           totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
-      </v-list-item-title>
-      <v-list-item-subtitle>
+      </v-card-subtitle>
+      <v-card-subtitle>
         Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
-      </v-list-item-subtitle>
-      <v-list-item-subtitle>
+      </v-card-subtitle>
+      <v-card-subtitle>
         Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
-      </v-list-item-subtitle>
-      <v-list-item-subtitle class="bg-red">
+      </v-card-subtitle>
+      <v-card-subtitle class="bg-red">
         Fees ${{
           totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
         }}
-      </v-list-item-subtitle>
-    </v-list-item-content>
-    <v-simple-table dense>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Name</th>
-            <th class="text-left">Price</th>
-            <th class="text-left">Quantity</th>
-            <th class="text-left">Total</th>
-            <th class="text-left">Broker Fee</th>
-            <th class="text-left">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="history in orderHistory.slice().reverse()"
-            :key="history.name"
-          >
-            <td :class="history.type == 'buy' ? 'bg-green' : 'bg-red'">
-              {{ history.shareName }}
-            </td>
-            <td>${{ history.price }}</td>
-            <td>{{ history.quantity }}</td>
-            <td>
-              ${{
-                (history.price * history.quantity)
-                  .toFixed(3)
-                  .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-              }}
-            </td>
-            <td>+${{ history.brokerageFee }}</td>
+      </v-card-subtitle>
+      <v-card-subtitle>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-subtitle>
 
-            <td>
-              {{
-                new Date(history.date).toLocaleDateString([], {
-                  weekday: "long",
-                  month: "long",
-                  day: "numeric",
-                })
-              }}
-            </td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+      <v-data-table
+        dense
+        hide-default-footer
+        disable-pagination
+        :headers="headers"
+        :items="orderHistory"
+        :search="search"
+      ></v-data-table>
+    </v-card>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      search: "",
+      headers: [
+        {
+          text: "Share",
+          align: "start",
+          sortable: false,
+          value: "shareName",
+        },
+        { text: "Price", value: "price" },
+        { text: "Quantity", value: "quantity" },
+        { text: "Total", value: "carbs" },
+        { text: "Brokerage", value: "brokerageFee" },
+        { text: "Date", value: "date" },
+      ],
+    };
+  },
   computed: {
     orderList() {
       return this.$store.getters.isSold;

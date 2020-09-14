@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs fixed-tabs dark>
+    <v-tabs fixed-tabs>
       <v-tab @click="type = 'weekly'">Weekly</v-tab>
       <v-tab @click="type = 'monthly'">Monthly</v-tab>
       <v-tab @click="type = 'yearly'">Yearly</v-tab>

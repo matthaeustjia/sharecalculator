@@ -9,6 +9,8 @@
             <th class="text-left">Quantity</th>
             <th class="text-left">Price</th>
             <th class="text-left">Current Price</th>
+            <th class="text-left">Total Paid</th>
+            <th class="text-left">Current Value</th>
             <th class="text-left">Difference</th>
           </tr>
         </thead>
@@ -16,10 +18,12 @@
           <tr v-for="(key, value) in groups" :key="value">
             <td>{{ value }}</td>
             <td>{{ getTotalQuantity(value) }}</td>
-            <td>${{ getAveragePrice(value) }}</td>
-            <td>${{ getSharePrice(value) }}</td>
+            <td>${{ getAveragePrice(value).toFixed(2) }}</td>
+            <td>${{ getSharePrice(value).toFixed(2) }}</td>
+            <td>${{ getTotalPaid(value).toFixed(2) }}</td>
+            <td>${{ getCurrentValue(value).toFixed(2) }}</td>
             <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
-              ${{ getDifference(value) }}
+              ${{ getDifference(value).toFixed(2) }}
             </td>
           </tr>
         </tbody>
@@ -37,7 +41,7 @@
 export default {
   methods: {
     getDifference(shareName){
-      return parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName)).toFixed(3);
+      return parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName));
     },
     getCurrentValue(shareName){
       return parseFloat(this.getSharePrice(shareName)*this.getTotalQuantity(shareName))
@@ -46,10 +50,10 @@ export default {
       let getSharePriceByName = this.sharePrice.find(
         share => share.shareName == shareName
       );
-      return getSharePriceByName.price.toFixed(3);;
+      return getSharePriceByName.price;;
     },
     getAveragePrice(shareName){
-      return parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName)).toFixed(3);
+      return parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName));
     },
     getTotalPaid(shareName) {
       let totalValue = 0;
@@ -58,7 +62,7 @@ export default {
         else totalValue -= parseFloat(this.groups.[shareName][i].price*this.groups.[shareName][i].quantity)
 
       }
-      return totalValue.toFixed(3);
+      return totalValue;
     },
     getTotalQuantity(shareName) {
       let quantity = 0;

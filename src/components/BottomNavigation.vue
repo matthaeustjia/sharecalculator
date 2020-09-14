@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation v-if="user" app color="teal">
+  <v-bottom-navigation v-if="user" app color="blue">
     <v-btn to="/">
       <v-icon>history</v-icon>
     </v-btn>
@@ -24,13 +24,13 @@ export default {
   methods: {
     signOut() {
       this.$store.commit("setUser", ""), this.$router.push("/login");
-    }
+    },
   },
   computed: {
     user() {
       return this.$store.state.user;
-    }
-  }
+    },
+  },
 };
 </script>
 

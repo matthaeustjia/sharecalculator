@@ -14,8 +14,8 @@ export default {
   name: "App",
 
   components: {
-    BottomNavigation
-  }
+    BottomNavigation,
+  },
 };
 </script>
 <style lang="scss">

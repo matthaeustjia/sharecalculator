@@ -1,11 +1,7 @@
 <template>
   <div>
-    <v-tabs fixed-tabs dark>
-      <v-tab @click="showAdd = true">Add Stock</v-tab>
-      <v-tab @click="showAdd = false">Remove Stock</v-tab>
-    </v-tabs>
-    <AddStock v-if="showAdd" />
-    <RemoveStock v-else />
+    <AddStock />
+    <RemoveStock />
   </div>
 </template>
 

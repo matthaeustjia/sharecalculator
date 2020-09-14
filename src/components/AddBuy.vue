@@ -106,7 +106,7 @@ export default {
         if(this.quantity - this.ownedShare == 0 ){
         isSold = true;
         for (let i=0; i<this.groups[this.shareName].length; i++){
-          db.ref("invoice").child(this.groups[this.shareName][i].key).update({"isSold" : true})
+          db.ref("invoice").child(this.groups[this.shareName][i].key).update({"date": this.date, "isSold" : true})
         }}
 
       }
