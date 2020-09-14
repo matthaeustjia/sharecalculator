@@ -95,10 +95,9 @@ export default {
       y = date.getFullYear(),
       m = date.getMonth(),
       d = date.getDate();
-    var nextUpdate = new Date(y, m, d+1).setHours(17, 0, 0, 0);
+    var nextUpdate = new Date(y, m, d+1).setHours(1, 0, 0, 0);
     var shouldUpdate = new Date().getTime();
     this.sharePrice.forEach(function(share) {
-
       if(share.nextUpdate < shouldUpdate){
     console.log("updated")
         var shareUrl =
@@ -106,6 +105,7 @@ export default {
         share.key +
         ".XASX&fbclid=IwAR2QlXIujN1jbxYHqoM-w-YkpO2WcPxjmbtwRpin8N7GYKdAFzp9LWsiYtc";
       axios.get(shareUrl).then(function(res) {
+        console.log(res.data.data.[0].close)
         db.ref("sharePrice")
           .child(share.key)
           .set({

@@ -7,8 +7,8 @@
           <tr>
             <th class="text-left">Name</th>
             <th class="text-left">Quantity</th>
-            <th class="text-left">Price</th>
-            <th class="text-left">Current Price</th>
+            <th class="text-left">Average</th>
+            <th class="text-left">Latest</th>
             <th class="text-left">Total Paid</th>
             <th class="text-left">Current Value</th>
             <th class="text-left">Difference</th>
@@ -18,12 +18,12 @@
           <tr v-for="(key, value) in groups" :key="value">
             <td>{{ value }}</td>
             <td>{{ getTotalQuantity(value) }}</td>
-            <td>${{ getAveragePrice(value).toFixed(2) }}</td>
-            <td>${{ getSharePrice(value).toFixed(2) }}</td>
-            <td>${{ getTotalPaid(value).toFixed(2) }}</td>
-            <td>${{ getCurrentValue(value).toFixed(2) }}</td>
+            <td>${{ getAveragePrice(value) }}</td>
+            <td>${{ getSharePrice(value) }}</td>
+            <td>${{ getTotalPaid(value) }}</td>
+            <td>${{ getCurrentValue(value) }}</td>
             <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
-              ${{ getDifference(value).toFixed(2) }}
+              ${{ getDifference(value) }}
             </td>
           </tr>
         </tbody>
@@ -53,7 +53,7 @@ export default {
       return getSharePriceByName.price;;
     },
     getAveragePrice(shareName){
-      return parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName));
+      return parseFloat(parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName)).toFixed(3));
     },
     getTotalPaid(shareName) {
       let totalValue = 0;
@@ -62,7 +62,7 @@ export default {
         else totalValue -= parseFloat(this.groups.[shareName][i].price*this.groups.[shareName][i].quantity)
 
       }
-      return totalValue;
+      return parseFloat(parseFloat(totalValue).toFixed(3));
     },
     getTotalQuantity(shareName) {
       let quantity = 0;
@@ -87,7 +87,7 @@ export default {
       Object.keys(this.groups).forEach(holding => {
         totalDifference += parseFloat(this.getDifference(holding))
       });
-      return totalDifference;
+      return totalDifference.toFixed(3);
     },
   }
 };

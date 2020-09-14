@@ -10,20 +10,12 @@
         {{ new Date(dateRanges.lastDay).toLocaleDateString() }}</v-card-subtitle
       >
       <v-card-subtitle :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
-        Profit ${{
-          totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
+        Profit ${{ totalProfit }}
       </v-card-subtitle>
-      <v-card-subtitle>
-        Buy ${{ totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
-      </v-card-subtitle>
-      <v-card-subtitle>
-        Sell ${{ totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") }}
-      </v-card-subtitle>
+      <v-card-subtitle> Buy ${{ totalBuy }} </v-card-subtitle>
+      <v-card-subtitle> Sell ${{ totalSell }} </v-card-subtitle>
       <v-card-subtitle class="bg-red">
-        Fees ${{
-          totalBrokerageFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }}
+        Fees ${{ totalBrokerageFee }}
       </v-card-subtitle>
       <v-card-subtitle>
         <v-text-field
@@ -42,7 +34,18 @@
         :headers="headers"
         :items="orderHistory"
         :search="search"
-      ></v-data-table>
+        ><template v-slot:item.type="{ item }">
+          <v-chip :color="getColor(item.type)" dark>{{
+            item.type.toUpperCase()
+          }}</v-chip>
+        </template>
+        <template v-slot:item.date="{ item }">
+          {{ new Date(item.date).toLocaleDateString() }}
+        </template>
+        <template v-slot:item.total="{ item }">
+          ${{ totalValue(item) }}
+        </template></v-data-table
+      >
     </v-card>
   </div>
 </template>
@@ -54,33 +57,49 @@ export default {
       search: "",
       headers: [
         {
-          text: "Share",
+          text: "Type",
           align: "start",
           sortable: false,
-          value: "shareName",
+          value: "type",
         },
+        { text: "Name", value: "shareName" },
         { text: "Price", value: "price" },
         { text: "Quantity", value: "quantity" },
-        { text: "Total", value: "carbs" },
+        { text: "Total", value: "total" },
         { text: "Brokerage", value: "brokerageFee" },
         { text: "Date", value: "date" },
       ],
     };
+  },
+  methods: {
+    getColor(type) {
+      if (type == "sell") return "red";
+      else return "green";
+    },
+    totalValue(share) {
+      return parseFloat(parseFloat(share.quantity * share.price).toFixed(3));
+    },
+    typeBackground(item) {
+      return item.type == "buy" ? "bg-green" : "bg-red";
+    },
   },
   computed: {
     orderList() {
       return this.$store.getters.isSold;
     },
     orderHistory() {
-      return Object.values(this.orderList).filter(
-        (history) =>
-          history.date > this.dateRanges.firstDay &&
-          history.date < this.dateRanges.lastDay
-      );
+      return Object.values(this.orderList)
+        .filter(
+          (history) =>
+            history.date > this.dateRanges.firstDay &&
+            history.date < this.dateRanges.lastDay
+        )
+        .slice()
+        .reverse();
     },
     totalTax() {
       if (this.totalProfit > 0)
-        return parseFloat(this.totalProfit * 0.325).toFixed(3);
+        return parseFloat(parseFloat(this.totalProfit * 0.325).toFixed(3));
       else return 0;
     },
     totalBrokerageFee() {
@@ -88,7 +107,7 @@ export default {
       for (let i = 0; i < this.orderHistory.length; i++) {
         totalBrokerageFee += parseFloat(this.orderHistory[i].brokerageFee);
       }
-      return parseFloat(totalBrokerageFee).toFixed(3);
+      return parseFloat(parseFloat(totalBrokerageFee).toFixed(3));
     },
     totalBuy() {
       let totalBuy = 0;
@@ -99,7 +118,7 @@ export default {
           );
         }
       }
-      return totalBuy.toFixed(3);
+      return parseFloat(totalBuy.toFixed(3));
     },
     totalSell() {
       let totalSell = 0;
@@ -110,15 +129,19 @@ export default {
           );
         }
       }
-      return totalSell.toFixed(3);
+      return parseFloat(totalSell.toFixed(3));
     },
     totalProfit() {
       return parseFloat(
-        this.totalSell - this.totalBuy - this.totalBrokerageFee
-      ).toFixed(3);
+        parseFloat(
+          this.totalSell - this.totalBuy - this.totalBrokerageFee
+        ).toFixed(3)
+      );
     },
     totalProfitAfterTax() {
-      return parseFloat(this.totalProfit - this.totalTax).toFixed(3);
+      return parseFloat(
+        parseFloat(this.totalProfit - this.totalTax).toFixed(3)
+      );
     },
   },
   props: ["dateRanges", "type"],
