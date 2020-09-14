@@ -18,16 +18,18 @@
         Fees ${{ totalBrokerageFee }}
       </v-card-subtitle>
       <v-card-subtitle>
-        <v-text-field
+        <v-select
           v-model="search"
-          append-icon="mdi-magnify"
+          append-icon="search"
+          :items="shareList"
           label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
+          item-text="shareName"
+          single-lane
+        ></v-select>
       </v-card-subtitle>
 
       <v-data-table
+        disable-sort
         dense
         hide-default-footer
         disable-pagination
@@ -60,15 +62,15 @@ export default {
           text: "Type",
           align: "start",
           sortable: false,
-          value: "type",
+          value: "type"
         },
         { text: "Name", value: "shareName" },
         { text: "Price", value: "price" },
         { text: "Quantity", value: "quantity" },
         { text: "Total", value: "total" },
         { text: "Brokerage", value: "brokerageFee" },
-        { text: "Date", value: "date" },
-      ],
+        { text: "Date", value: "date" }
+      ]
     };
   },
   methods: {
@@ -81,21 +83,38 @@ export default {
     },
     typeBackground(item) {
       return item.type == "buy" ? "bg-green" : "bg-red";
-    },
+    }
   },
   computed: {
+    shareList() {
+      return this.$store.state.shareList;
+    },
     orderList() {
       return this.$store.getters.isSold;
     },
     orderHistory() {
-      return Object.values(this.orderList)
-        .filter(
-          (history) =>
-            history.date > this.dateRanges.firstDay &&
-            history.date < this.dateRanges.lastDay
-        )
-        .slice()
-        .reverse();
+      if (!this.search) {
+        return Object.values(this.orderList)
+          .filter(
+            history =>
+              history.date > this.dateRanges.firstDay &&
+              history.date < this.dateRanges.lastDay
+          )
+          .slice()
+          .reverse();
+      } else {
+        console.log(this.search);
+
+        return Object.values(this.orderList)
+          .filter(
+            history =>
+              history.shareName === this.search &&
+              history.date > this.dateRanges.firstDay &&
+              history.date < this.dateRanges.lastDay
+          )
+          .slice()
+          .reverse();
+      }
     },
     totalTax() {
       if (this.totalProfit > 0)
@@ -142,9 +161,9 @@ export default {
       return parseFloat(
         parseFloat(this.totalProfit - this.totalTax).toFixed(3)
       );
-    },
+    }
   },
-  props: ["dateRanges", "type"],
+  props: ["dateRanges", "type"]
 };
 </script>
 
