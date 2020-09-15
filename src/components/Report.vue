@@ -19,6 +19,7 @@
       </v-card-subtitle>
       <v-card-subtitle>
         <v-select
+          :loading="loading"
           v-model="search"
           append-icon="search"
           :items="shareList"
@@ -86,6 +87,10 @@ export default {
     },
   },
   computed: {
+    loading() {
+      if (this.orderList) return false;
+      else return true;
+    },
     shareList() {
       return this.$store.state.shareList;
     },

@@ -31,9 +31,11 @@
     </v-simple-table>
 
     Total Difference
-    <span :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
+    <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
       ${{ getTotalDifference }}
-    </span>
+    </div>
+    Total Value
+    <div>${{ getTotalValue }}</div>
   </div>
 </template>
 
@@ -88,6 +90,12 @@ export default {
         totalDifference += parseFloat(this.getDifference(holding))
       });
       return totalDifference.toFixed(3);
+    },getTotalValue(){
+      let totalValue = 0;
+      Object.keys(this.groups).forEach(holding => {
+        totalValue += parseFloat(this.getCurrentValue(holding))
+      });
+      return totalValue.toFixed(3);
     },
   }
 };
