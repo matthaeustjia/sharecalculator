@@ -26,8 +26,7 @@
                     label="Quantity"
                     required
                     type="number"
-                    min="1"
-                    step="1"
+                    pattern="[0-9]{10}"
                   ></v-text-field>
                   <span v-if="type == 'sell' && shareName">
                     Available to sell: {{ this.ownedShare }} units

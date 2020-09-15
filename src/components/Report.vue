@@ -29,7 +29,7 @@
       </v-card-subtitle>
 
       <v-data-table
-        disable-sort
+        mobile-breakpoint="0"
         dense
         hide-default-footer
         disable-pagination
@@ -62,15 +62,15 @@ export default {
           text: "Type",
           align: "start",
           sortable: false,
-          value: "type"
+          value: "type",
         },
         { text: "Name", value: "shareName" },
         { text: "Price", value: "price" },
         { text: "Quantity", value: "quantity" },
         { text: "Total", value: "total" },
         { text: "Brokerage", value: "brokerageFee" },
-        { text: "Date", value: "date" }
-      ]
+        { text: "Date", value: "date" },
+      ],
     };
   },
   methods: {
@@ -83,7 +83,7 @@ export default {
     },
     typeBackground(item) {
       return item.type == "buy" ? "bg-green" : "bg-red";
-    }
+    },
   },
   computed: {
     shareList() {
@@ -96,7 +96,7 @@ export default {
       if (!this.search) {
         return Object.values(this.orderList)
           .filter(
-            history =>
+            (history) =>
               history.date > this.dateRanges.firstDay &&
               history.date < this.dateRanges.lastDay
           )
@@ -107,7 +107,7 @@ export default {
 
         return Object.values(this.orderList)
           .filter(
-            history =>
+            (history) =>
               history.shareName === this.search &&
               history.date > this.dateRanges.firstDay &&
               history.date < this.dateRanges.lastDay
@@ -161,9 +161,9 @@ export default {
       return parseFloat(
         parseFloat(this.totalProfit - this.totalTax).toFixed(3)
       );
-    }
+    },
   },
-  props: ["dateRanges", "type"]
+  props: ["dateRanges", "type"],
 };
 </script>
 

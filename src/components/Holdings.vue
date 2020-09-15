@@ -41,7 +41,7 @@
 export default {
   methods: {
     getDifference(shareName){
-      return parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName));
+      return parseFloat(parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName)).toFixed(3));
     },
     getCurrentValue(shareName){
       return parseFloat(this.getSharePrice(shareName)*this.getTotalQuantity(shareName))
