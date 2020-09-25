@@ -8,8 +8,8 @@ export default new Vuex.Store({
   state: {
     user: "",
     shareList: [],
-    orderList: {},
-    sharePrice: [],
+    orderList: [],
+    sharePrice: []
   },
   mutations: {
     clearAll(state) {
@@ -35,20 +35,20 @@ export default new Vuex.Store({
       } else {
         state.user = user.toLowerCase();
       }
-    },
+    }
   },
   getters: {
     isSold(state) {
-      return state.orderList.filter((share) => share.isSold);
+      return state.orderList.filter(share => share.isSold);
     },
     isNotSold(state) {
-      return state.orderList.filter((share) => share.isSold === false);
+      return state.orderList.filter(share => share.isSold === false);
     },
     groups(state, getters) {
       let grouped = _.groupBy(getters.isNotSold, "shareName");
       return grouped;
-    },
+    }
   },
   actions: {},
-  modules: {},
+  modules: {}
 });

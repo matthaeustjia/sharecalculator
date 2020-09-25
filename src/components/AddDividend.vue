@@ -39,9 +39,6 @@
               type="number"
               pattern="[0-9]{10}"
             ></v-text-field>
-            <span v-if="type == 'sell' && shareName">
-              Available to sell: {{ this.ownedShare }} units
-            </span>
             <v-text-field
               v-model="price"
               label="Dividend per share"
@@ -88,15 +85,19 @@ export default {
       quantity: "",
       date: Date.now(),
       dialog: false,
+      type: "dividend",
     };
   },
   methods: {
     addToDatabase() {
-      db.ref("dividends").push({
+      db.ref("invoice").push({
         shareName: this.shareName,
         price: this.price,
         quantity: this.quantity,
         date: this.date,
+        type: this.type,
+        isSold: true,
+        brokerageFee: 0,
         owner: this.$store.state.user,
       });
       setTimeout(() => this.$router.push("/"), 1000);

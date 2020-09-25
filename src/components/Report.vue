@@ -12,9 +12,9 @@
       <v-card-subtitle :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
         Profit ${{ totalProfit }}
       </v-card-subtitle>
-
       <v-card-subtitle> Buy ${{ totalBuy }} </v-card-subtitle>
       <v-card-subtitle> Sell ${{ totalSell }} </v-card-subtitle>
+      <v-card-subtitle> Dividend ${{ totalDividend }} </v-card-subtitle>
       <v-card-subtitle class="bg-red">
         Fees ${{ totalBrokerageFee }}
       </v-card-subtitle>
@@ -65,14 +65,14 @@ export default {
           text: "Name",
           align: "start",
           sortable: false,
-          value: "shareName",
+          value: "shareName"
         },
         { text: "Price", value: "price" },
         { text: "Quantity", value: "quantity" },
         { text: "Total", value: "total" },
         { text: "Brokerage", value: "brokerageFee" },
-        { text: "Date", value: "date" },
-      ],
+        { text: "Date", value: "date" }
+      ]
     };
   },
   methods: {
@@ -88,7 +88,7 @@ export default {
     },
     typeBackground(item) {
       return item.type == "buy" ? "bg-green" : "bg-red";
-    },
+    }
   },
   computed: {
     loading() {
@@ -105,7 +105,7 @@ export default {
       if (!this.search) {
         return Object.values(this.orderList)
           .filter(
-            (history) =>
+            history =>
               history.date > this.dateRanges.firstDay &&
               history.date < this.dateRanges.lastDay
           )
@@ -116,7 +116,7 @@ export default {
 
         return Object.values(this.orderList)
           .filter(
-            (history) =>
+            history =>
               history.shareName === this.search &&
               history.date > this.dateRanges.firstDay &&
               history.date < this.dateRanges.lastDay
@@ -148,6 +148,17 @@ export default {
       }
       return parseFloat(totalBuy.toFixed(3));
     },
+    totalDividend() {
+      let totalDividend = 0;
+      for (let i = 0; i < this.orderHistory.length; i++) {
+        if (this.orderHistory[i].type == "dividend") {
+          totalDividend += parseFloat(
+            this.orderHistory[i].price * this.orderHistory[i].quantity
+          );
+        }
+      }
+      return parseFloat(totalDividend.toFixed(3));
+    },
     totalSell() {
       let totalSell = 0;
       for (let i = 0; i < this.orderHistory.length; i++) {
@@ -162,7 +173,10 @@ export default {
     totalProfit() {
       return parseFloat(
         parseFloat(
-          this.totalSell - this.totalBuy - this.totalBrokerageFee
+          this.totalDividend +
+            this.totalSell -
+            this.totalBuy -
+            this.totalBrokerageFee
         ).toFixed(3)
       );
     },
@@ -170,9 +184,9 @@ export default {
       return parseFloat(
         parseFloat(this.totalProfit - this.totalTax).toFixed(3)
       );
-    },
+    }
   },
-  props: ["dateRanges", "type"],
+  props: ["dateRanges", "type"]
 };
 </script>
 
