@@ -97,6 +97,7 @@ export default {
       d = date.getDate();
     var nextUpdate = new Date(y, m, d+1).setHours(1, 0, 0, 0);
     var shouldUpdate = new Date().getTime();
+    console.log(shouldUpdate)
     this.sharePrice.forEach(function(share) {
       if(share.nextUpdate < shouldUpdate){
     console.log("updated")

@@ -12,6 +12,7 @@
       <v-card-subtitle :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
         Profit ${{ totalProfit }}
       </v-card-subtitle>
+
       <v-card-subtitle> Buy ${{ totalBuy }} </v-card-subtitle>
       <v-card-subtitle> Sell ${{ totalSell }} </v-card-subtitle>
       <v-card-subtitle class="bg-red">
@@ -27,6 +28,7 @@
           item-text="shareName"
           single-lane
         ></v-select>
+        <v-btn class="warning" block @click="clearSearch">Clear</v-btn>
       </v-card-subtitle>
 
       <v-data-table
@@ -37,9 +39,9 @@
         :headers="headers"
         :items="orderHistory"
         :search="search"
-        ><template v-slot:item.type="{ item }">
+        ><template v-slot:item.shareName="{ item }">
           <v-chip :color="getColor(item.type)" dark>{{
-            item.type.toUpperCase()
+            item.shareName.toUpperCase()
           }}</v-chip>
         </template>
         <template v-slot:item.date="{ item }">
@@ -60,12 +62,11 @@ export default {
       search: "",
       headers: [
         {
-          text: "Type",
+          text: "Name",
           align: "start",
           sortable: false,
-          value: "type",
+          value: "shareName",
         },
-        { text: "Name", value: "shareName" },
         { text: "Price", value: "price" },
         { text: "Quantity", value: "quantity" },
         { text: "Total", value: "total" },
@@ -75,6 +76,9 @@ export default {
     };
   },
   methods: {
+    clearSearch() {
+      this.search = "";
+    },
     getColor(type) {
       if (type == "sell") return "red";
       else return "green";

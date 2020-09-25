@@ -1,75 +1,100 @@
 <template>
-  <div>
-    <v-main>
-      <v-container fluid>
-        <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
-            <v-card class="elevation-12">
-              <v-toolbar>
-                <v-toolbar-title class="capitalised">
-                  {{ type }}
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
-              <v-card-text>
-                <v-form v-on:submit.prevent="addToDatabase()">
-                  <v-select
-                    v-model="shareName"
-                    :items="shareList"
-                    label="Share Name"
-                    item-text="shareName"
-                    required
-                  ></v-select>
+  <v-row justify="center">
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-container>
+          <v-btn
+            class="capitalised"
+            @click="type = 'buy'"
+            block
+            color="success"
+            dark
+            v-bind="attrs"
+            v-on="on"
+          >
+            Buy Stock </v-btn
+          ><v-btn
+            class="capitalised"
+            @click="type = 'sell'"
+            block
+            color="error"
+            dark
+            v-bind="attrs"
+            v-on="on"
+          >
+            Sell Stock
+          </v-btn>
+        </v-container>
+      </template>
+      <v-card class="elevation-12">
+        <v-toolbar>
+          <v-card-title>
+            <span class="headline">{{ type }}</span>
+          </v-card-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+        <v-card-text>
+          <v-form v-on:submit.prevent="addToDatabase()">
+            <v-select
+              v-model="shareName"
+              :items="shareList"
+              label="Share Name"
+              item-text="shareName"
+              required
+            ></v-select>
 
-                  <v-text-field
-                    v-model="quantity"
-                    label="Quantity"
-                    required
-                    type="number"
-                    pattern="[0-9]{10}"
-                  ></v-text-field>
-                  <span v-if="type == 'sell' && shareName">
-                    Available to sell: {{ this.ownedShare }} units
-                  </span>
-                  <v-text-field
-                    v-model="price"
-                    label="Price"
-                    required
-                    type="number"
-                  ></v-text-field>
+            <v-text-field
+              v-model="quantity"
+              label="Quantity"
+              required
+              type="number"
+              pattern="[0-9]{10}"
+            ></v-text-field>
+            <span v-if="type == 'sell' && shareName">
+              Available to sell: {{ this.ownedShare }} units
+            </span>
+            <v-text-field
+              v-model="price"
+              label="Price"
+              required
+              type="number"
+            ></v-text-field>
 
-                  <v-text-field
-                    v-if="isValid"
-                    v-model="totalValue"
-                    label="Total Value"
-                    readonly
-                    type="number"
-                  ></v-text-field>
+            <v-text-field
+              v-if="isValid"
+              v-model="totalValue"
+              label="Total Value"
+              readonly
+              type="number"
+            ></v-text-field>
 
-                  <v-select
-                    v-model="broker"
-                    label="Broker"
-                    :items="brokerList"
-                    item-text="shareName"
-                    required
-                  ></v-select>
-                  <v-btn
-                    type="submit"
-                    color="success"
-                    :disabled="!isValid"
-                    class="mr-4"
-                    >{{ type }}</v-btn
-                  >
-                </v-form>
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-main>
-  </div>
+            <v-select
+              v-model="broker"
+              label="Broker"
+              :items="brokerList"
+              item-text="shareName"
+              required
+            ></v-select>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn large @click="dialog = false" color="error" class="mr-4"
+                >Close</v-btn
+              >
+              <v-btn
+                large
+                type="submit"
+                color="success"
+                :disabled="!isValid"
+                class="mr-4"
+                >{{ type }}</v-btn
+              >
+            </v-card-actions>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
-
 <script>
 import { db } from "@/firebase";
 
@@ -82,6 +107,8 @@ export default {
       quantity: "",
       broker: "SelfWealth",
       date: Date.now(),
+      dialog: false,
+      type: "buy"
     };
   },
   methods: {
@@ -124,7 +151,6 @@ export default {
       setTimeout(() => this.$router.push("/"), 1000);
     },
   },
-  props: ["type"],
   computed: {
     totalValue(){
       return parseFloat(this.quantity * this.price);

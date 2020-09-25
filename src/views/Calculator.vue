@@ -1,0 +1,93 @@
+<template>
+  <v-container>
+    <v-form>
+      <v-container class="v-flex">
+        <v-row
+          ><v-select
+            v-model="broker"
+            label="Broker"
+            :items="brokerList"
+            item-text="shareName"
+            required
+          ></v-select
+        ></v-row>
+        <v-row>
+          <v-text-field
+            v-model="quantity"
+            label="Quantity"
+            required
+            type="number"
+          ></v-text-field>
+        </v-row>
+        <v-row>
+          <v-text-field
+            v-model="buyPrice"
+            label="Buying Price"
+            required
+            type="number"
+          ></v-text-field>
+        </v-row>
+        <v-row>
+          <v-text-field
+            v-model="sellPrice"
+            label="Selling Price"
+            required
+            type="number"
+          ></v-text-field>
+        </v-row>
+        <v-row>
+          <v-text-field
+            readonly
+            v-model="brokerFee"
+            label="BrokerageFee"
+            required
+            type="number"
+          ></v-text-field>
+        </v-row>
+      </v-container>
+    </v-form>
+    <v-alert v-if="totalProfit > 0" color="success">
+      Profit ${{ totalProfit }}
+    </v-alert>
+    <v-alert v-else color="error"> ${{ totalProfit }} </v-alert></v-container
+  >
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      brokerList: ["SelfWealth", "Commsec"],
+      quantity: 0,
+      buyPrice: 0,
+      sellPrice: 0,
+      broker: "SelfWealth",
+    };
+  },
+  computed: {
+    total() {
+      return this.quantity * this.sellPrice;
+    },
+    totalProfit() {
+      return parseFloat(
+        (this.sellPrice - this.buyPrice) * this.quantity - this.brokerFee
+      ).toFixed(3);
+    },
+    brokerFee() {
+      if (this.broker == "SelfWealth") {
+        return 9.5 * 2;
+      } else {
+        if (this.total <= 1000) {
+          return 10 * 2;
+        } else if (this.total > 1000 && this.total <= 10000) {
+          return 19.95 * 2;
+        } else if (this.total > 10000 && this.total <= 25000) {
+          return 29.95 * 2;
+        } else {
+          return this.total * 0.0012 * 2;
+        }
+      }
+    },
+  },
+};
+</script>

@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-tabs fixed-tabs dark>
-      <v-tab @click="type = 'buy'">Buy</v-tab>
-      <v-tab @click="type = 'sell'">Sell</v-tab>
+      <v-tab @click="type = 'stock'">Stock</v-tab>
+      <v-tab @click="type = 'dividend'">Dividend</v-tab>
     </v-tabs>
 
-    <AddBuy v-bind:type="type" />
+    <AddBuy v-if="type == 'stock'" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import AddBuy from "@/components/AddBuy";
 export default {
   data() {
     return {
-      type: "buy",
+      type: "stock",
     };
   },
   components: {

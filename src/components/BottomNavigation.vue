@@ -7,6 +7,9 @@
     <v-btn to="/add">
       <v-icon>add_shopping_cart</v-icon>
     </v-btn>
+    <v-btn to="/calculator">
+      <v-icon>functions</v-icon>
+    </v-btn>
 
     <v-btn to="/orders">
       <v-icon>filter_list</v-icon>
