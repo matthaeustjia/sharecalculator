@@ -6,11 +6,13 @@
     </v-tabs>
 
     <AddBuy v-if="type == 'stock'" />
+    <AddDividend v-else />
   </div>
 </template>
 
 <script>
 import AddBuy from "@/components/AddBuy";
+import AddDividend from "@/components/AddDividend";
 
 export default {
   data() {
@@ -20,6 +22,7 @@ export default {
   },
   components: {
     AddBuy,
+    AddDividend,
   },
 };
 </script>
