@@ -16,7 +16,7 @@ import Calculator from "@/components/Calculator";
 export default {
   data() {
     return {
-      type: "stock",
+      type: "login",
     };
   },
   components: {
