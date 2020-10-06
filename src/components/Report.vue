@@ -65,18 +65,19 @@ export default {
           text: "Name",
           align: "start",
           sortable: false,
-          value: "shareName"
+          value: "shareName",
         },
         { text: "Price", value: "price" },
         { text: "Quantity", value: "quantity" },
         { text: "Total", value: "total" },
         { text: "Brokerage", value: "brokerageFee" },
-        { text: "Date", value: "date" }
-      ]
+        { text: "Date", value: "date" },
+      ],
     };
   },
   methods: {
     clearSearch() {
+      console.log(this.dateRanges);
       this.search = "";
     },
     getColor(type) {
@@ -88,7 +89,7 @@ export default {
     },
     typeBackground(item) {
       return item.type == "buy" ? "bg-green" : "bg-red";
-    }
+    },
   },
   computed: {
     loading() {
@@ -105,18 +106,16 @@ export default {
       if (!this.search) {
         return Object.values(this.orderList)
           .filter(
-            history =>
+            (history) =>
               history.date > this.dateRanges.firstDay &&
               history.date < this.dateRanges.lastDay
           )
           .slice()
           .reverse();
       } else {
-        console.log(this.search);
-
         return Object.values(this.orderList)
           .filter(
-            history =>
+            (history) =>
               history.shareName === this.search &&
               history.date > this.dateRanges.firstDay &&
               history.date < this.dateRanges.lastDay
@@ -184,9 +183,9 @@ export default {
       return parseFloat(
         parseFloat(this.totalProfit - this.totalTax).toFixed(3)
       );
-    }
+    },
   },
-  props: ["dateRanges", "type"]
+  props: ["dateRanges", "type"],
 };
 </script>
 

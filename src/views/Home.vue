@@ -1,13 +1,18 @@
 <template>
   <div>
-    <v-tabs fixed-tabs>
-      <v-tab @click="type = 'weekly'">Weekly</v-tab>
-      <v-tab @click="type = 'monthly'">Monthly</v-tab>
-      <v-tab @click="type = 'yearly'">Yearly</v-tab>
-      <v-tab @click="type = 'holdings'">Holdings</v-tab>
-    </v-tabs>
-    <Holdings v-if="type == 'holdings'" />
-    <Report v-else v-bind:type="type" v-bind:dateRanges="dateRanges" />
+    <v-container class="d-flex flex-column justify-center" v-if="!dialog">
+      <v-btn x-large block @click="openDialog('daily')">Daily</v-btn>
+      <v-btn x-large block @click="openDialog('weekly')">Weekly</v-btn>
+      <v-btn x-large block @click="openDialog('monthly')">Monthly</v-btn>
+      <v-btn x-large block @click="openDialog('yearly')">Yearly</v-btn>
+      <v-btn x-large block @click="openDialog('all')">All</v-btn>
+      <v-btn x-large block @click="openDialog('holdings')">Holdings</v-btn>
+    </v-container>
+    <div v-else>
+      <v-btn @click="closeDialog" block class="error">Close</v-btn>
+      <Holdings v-if="type == 'holdings'" />
+      <Report v-else v-bind:type="type" v-bind:dateRanges="dateRanges" />
+    </div>
   </div>
 </template>
 
@@ -20,7 +25,8 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      type: "weekly",
+      type: "daily",
+      dialog: true,
       sharePrice: this.$store.state.sharePrice
     };
   },
@@ -32,7 +38,13 @@ export default {
         let y = date.getFullYear();
         let m = date.getMonth();
         let w = date.getDate() - date.getDay()+1; // First day is the day of the month - the day of the week
-        if(this.type == 'weekly')
+        let d = date.getDate();
+        if(this.type == 'daily')
+        {
+        firstDay = new Date(date.setDate(d)).setHours(0,0,0,0)
+        lastDay = new Date(date.setDate(d)).setHours(23, 59, 59, 999)
+        }
+        else if(this.type == 'weekly')
         {
         firstDay = new Date(date.setDate(w)).setHours(0,0,0,0)
         lastDay = new Date(date.setDate(w+6)).setHours(23, 59, 59, 999)
@@ -55,6 +67,13 @@ export default {
     }
   },
   methods: {
+    openDialog(type){
+      this.dialog = true;
+      this.type = type;
+    },
+    closeDialog(){
+      this.dialog = false;
+    },
     initializeData() {
       this.$store.commit("clearAll");
       db.ref("ShareList")
