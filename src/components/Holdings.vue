@@ -12,6 +12,7 @@
             <th class="text-left">Total Paid</th>
             <th class="text-left">Current Value</th>
             <th class="text-left">Difference</th>
+            <th class="text-left">%</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +25,13 @@
             <td>${{ getCurrentValue(value) }}</td>
             <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
               ${{ getDifference(value) }}
+            </td>
+            <td
+              :class="
+                getDifferencePercentage(value) > 0 ? 'bg-green' : 'bg-red'
+              "
+            >
+              %{{ getDifferencePercentage(value) }}
             </td>
           </tr>
         </tbody>
@@ -44,6 +52,9 @@ export default {
   methods: {
     getDifference(shareName){
       return parseFloat(parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName)).toFixed(3));
+    },
+    getDifferencePercentage(shareName){
+      return parseFloat(parseFloat(this.getAveragePrice(shareName)-this.getSharePrice(shareName)).toFixed(3)/this.getSharePrice(shareName)*100).toFixed(3);
     },
     getCurrentValue(shareName){
       return parseFloat(this.getSharePrice(shareName)*this.getTotalQuantity(shareName))

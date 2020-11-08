@@ -25,8 +25,8 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      type: "daily",
-      dialog: true,
+      type: "",
+      dialog: false,
       sharePrice: this.$store.state.sharePrice
     };
   },

@@ -45,6 +45,7 @@ export default {
         .set({
           shareName: shareName,
           nextUpdate: 0,
+          price: 0,
         });
       this.$router.push("/");
     },
