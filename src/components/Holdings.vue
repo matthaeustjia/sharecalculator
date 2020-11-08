@@ -26,11 +26,7 @@
             <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
               ${{ getDifference(value) }}
             </td>
-            <td
-              :class="
-                getDifferencePercentage(value) > 0 ? 'bg-green' : 'bg-red'
-              "
-            >
+            <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
               %{{ getDifferencePercentage(value) }}
             </td>
           </tr>
