@@ -47,7 +47,8 @@
       </v-container>
     </v-form>
     <v-alert v-if="totalProfit > 0" color="success">
-      Profit ${{ totalProfit }}
+      <div>${{ totalProfit }}</div>
+      <div>%{{ getDifferencePercentage }}</div>
     </v-alert>
     <v-alert v-else color="error"> ${{ totalProfit }} </v-alert></v-container
   >
@@ -72,6 +73,14 @@ export default {
       return parseFloat(
         (this.sellPrice - this.buyPrice) * this.quantity - this.brokerFee
       ).toFixed(3);
+    },
+    valueDifference() {
+      return this.sellPrice - this.buyPrice;
+    },
+    getDifferencePercentage() {
+      return parseFloat((this.valueDifference / this.buyPrice) * 100).toFixed(
+        2
+      );
     },
     brokerFee() {
       if (this.broker == "SelfWealth") {
