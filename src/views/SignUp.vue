@@ -29,6 +29,7 @@
               ></v-text-field>
 
               <v-card-actions>
+                <v-btn to="/" color="error">BACK</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn :disabled="isValid" type="submit" color="success"
                   >SIGN UP</v-btn
@@ -37,6 +38,10 @@
             </v-form>
           </v-card-text>
         </v-card>
+
+        <v-alert v-if="error" color="red" dark>
+          {{ error }}
+        </v-alert>
       </v-flex>
     </v-layout>
   </v-container>
@@ -49,6 +54,7 @@ export default {
       email: "",
       password: "",
       passwordConfirm: "",
+      error: "",
     };
   },
   computed: {
@@ -68,7 +74,9 @@ export default {
   },
   methods: {
     signUp() {
-      auth.createUserWithEmailAndPassword(this.email, this.password);
+      auth
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .catch((error) => (this.error = error));
     },
   },
 };
