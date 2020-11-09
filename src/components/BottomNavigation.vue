@@ -21,10 +21,13 @@
   </div>
 </template>
 <script>
+import { auth } from "@/firebase";
+
 export default {
   methods: {
     signOut() {
-      this.$store.commit("setUser", ""), this.$router.push("/login");
+      auth.signOut();
+      this.$router.push("/login");
     },
   },
   computed: {

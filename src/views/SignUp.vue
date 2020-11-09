@@ -4,28 +4,35 @@
       <v-flex xs12 sm8 md4>
         <v-card class="elevation-12">
           <v-toolbar dark color="primary">
-            <v-toolbar-title>Login form</v-toolbar-title>
+            <v-toolbar-title>Sign Up form</v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
-            <v-form @submit.prevent="signIn">
+            <v-form @submit.prevent="signUp">
               <v-text-field
                 prepend-icon="person"
                 v-model="email"
-                label="Login"
-                type="text"
+                label="Email"
+                type="email"
               ></v-text-field>
               <v-text-field
                 prepend-icon="lock"
                 v-model="password"
                 label="Password"
                 type="password"
+              ></v-text-field
+              ><v-text-field
+                prepend-icon="lock"
+                v-model="passwordConfirm"
+                label="Password Confirmation"
+                type="password"
               ></v-text-field>
 
               <v-card-actions>
-                <v-btn to="/signup" color="primary">Signup</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn type="submit" color="success">Login</v-btn>
+                <v-btn :disabled="isValid" type="submit" color="success"
+                  >SIGN UP</v-btn
+                >
               </v-card-actions>
             </v-form>
           </v-card-text>
@@ -41,11 +48,27 @@ export default {
     return {
       email: "",
       password: "",
+      passwordConfirm: "",
     };
   },
+  computed: {
+    isEmailValid() {
+      return true;
+    },
+
+    isValid() {
+      if (
+        this.isEmailValid &&
+        this.password == this.passwordConfirm &&
+        this.password
+      )
+        return false;
+      else return true;
+    },
+  },
   methods: {
-    signIn() {
-      auth.signInWithEmailAndPassword(this.email, this.password);
+    signUp() {
+      auth.createUserWithEmailAndPassword(this.email, this.password);
     },
   },
 };

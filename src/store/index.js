@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: "",
+    user: null,
     shareList: [],
     orderList: [],
     sharePrice: []
@@ -33,7 +33,7 @@ export default new Vuex.Store({
       if (user == "logout") {
         state.user = null;
       } else {
-        state.user = user.toLowerCase();
+        state.user = user.email;
       }
     }
   },

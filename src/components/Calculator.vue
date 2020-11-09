@@ -48,9 +48,12 @@
     </v-form>
     <v-alert v-if="totalProfit > 0" color="success">
       <div>${{ totalProfit }}</div>
-      <div>%{{ getDifferencePercentage }}</div>
+      <div>{{ getDifferencePercentage }}%</div>
     </v-alert>
-    <v-alert v-else color="error"> ${{ totalProfit }} </v-alert></v-container
+    <v-alert v-else color="error">
+      <div>${{ totalProfit }}</div>
+      <div>{{ getDifferencePercentage }}%</div>
+    </v-alert></v-container
   >
 </template>
 
