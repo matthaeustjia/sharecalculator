@@ -25,7 +25,7 @@
 
               <v-card-text>
                 <div>
-                  no account?
+                  No account?
                   <router-link to="/signup">create one!</router-link>
                 </div>
                 <div>

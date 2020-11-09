@@ -27,6 +27,7 @@ export default {
   methods: {
     signOut() {
       auth.signOut();
+      this.$store.commit("setUser", "");
       this.$router.push("/login");
     },
   },
