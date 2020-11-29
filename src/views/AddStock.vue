@@ -17,13 +17,13 @@ import AddDividend from "@/components/AddDividend";
 export default {
   data() {
     return {
-      type: "stock",
+      type: "stock"
     };
   },
   components: {
     AddBuy,
-    AddDividend,
-  },
+    AddDividend
+  }
 };
 </script>
 

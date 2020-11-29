@@ -62,10 +62,10 @@ export default {
   data() {
     return {
       brokerList: ["SelfWealth", "Commsec"],
-      quantity: 0,
-      buyPrice: 0,
-      sellPrice: 0,
-      broker: "SelfWealth",
+      quantity: "",
+      buyPrice: "",
+      sellPrice: "",
+      broker: "SelfWealth"
     };
   },
   computed: {
@@ -99,7 +99,7 @@ export default {
           return this.total * 0.0012 * 2;
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>

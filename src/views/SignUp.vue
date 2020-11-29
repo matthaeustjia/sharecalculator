@@ -54,7 +54,7 @@ export default {
       email: "",
       password: "",
       passwordConfirm: "",
-      error: "",
+      error: ""
     };
   },
   computed: {
@@ -70,15 +70,15 @@ export default {
       )
         return false;
       else return true;
-    },
+    }
   },
   methods: {
     signUp() {
       auth
         .createUserWithEmailAndPassword(this.email, this.password)
-        .catch((error) => (this.error = error));
-    },
-  },
+        .catch(error => (this.error = error));
+    }
+  }
 };
 </script>
 

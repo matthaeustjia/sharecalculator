@@ -47,7 +47,7 @@ export default {
       password: "",
       passwordConfirm: "",
       error: "",
-      success: "",
+      success: ""
     };
   },
   computed: {
@@ -58,16 +58,16 @@ export default {
     isValid() {
       if (this.isEmailValid) return false;
       else return true;
-    },
+    }
   },
   methods: {
     forgotPassword() {
       auth
         .sendPasswordResetEmail(this.email)
         .then(() => (this.success = "Succesfully resetting the password."))
-        .catch((error) => (this.error = error));
-    },
-  },
+        .catch(error => (this.error = error));
+    }
+  }
 };
 </script>
 

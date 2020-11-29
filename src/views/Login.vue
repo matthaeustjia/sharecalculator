@@ -16,13 +16,13 @@ import Calculator from "@/components/Calculator";
 export default {
   data() {
     return {
-      type: "login",
+      type: "login"
     };
   },
   components: {
     LoginForm,
-    Calculator,
-  },
+    Calculator
+  }
 };
 </script>
 

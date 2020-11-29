@@ -12,13 +12,13 @@ import RemoveStock from "@/components/RemoveStock";
 export default {
   data() {
     return {
-      showAdd: true,
+      showAdd: true
     };
   },
   components: {
     AddStock,
-    RemoveStock,
-  },
+    RemoveStock
+  }
 };
 </script>
 
