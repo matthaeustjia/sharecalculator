@@ -34,12 +34,14 @@
       </template>
     </v-simple-table>
 
+    Total Spent
+    <div>${{ getTotalSpent }}</div>
+    Total Current Value
+    <div>${{ getTotalValue }}</div>
     Total Difference
     <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
       ${{ getTotalDifference }}
     </div>
-    Total Value
-    <div>${{ getTotalValue }}</div>
   </div>
 </template>
 
@@ -47,10 +49,10 @@
 export default {
   methods: {
     getDifference(shareName){
-      return parseFloat(parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName)).toFixed(3));
+      return parseFloat(parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName)).toFixed(2));
     },
     getDifferencePercentage(shareName){
-      return parseFloat(parseFloat(this.getAveragePrice(shareName)-this.getSharePrice(shareName)).toFixed(3)/this.getAveragePrice(shareName)*100).toFixed(3);
+      return parseFloat(parseFloat(this.getAveragePrice(shareName)-this.getSharePrice(shareName)).toFixed(2)/this.getAveragePrice(shareName)*100).toFixed(2);
     },
     getCurrentValue(shareName){
       return parseFloat(this.getSharePrice(shareName)*this.getTotalQuantity(shareName))
@@ -62,7 +64,7 @@ export default {
       return getSharePriceByName.price;;
     },
     getAveragePrice(shareName){
-      return parseFloat(parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName)).toFixed(3));
+      return parseFloat(parseFloat(this.getTotalPaid(shareName)/this.getTotalQuantity(shareName)).toFixed(2));
     },
     getTotalPaid(shareName) {
       let totalValue = 0;
@@ -71,7 +73,7 @@ export default {
         else totalValue -= parseFloat(this.groups.[shareName][i].price*this.groups.[shareName][i].quantity)
 
       }
-      return parseFloat(parseFloat(totalValue).toFixed(3));
+      return parseFloat(parseFloat(totalValue).toFixed(2));
     },
     getTotalQuantity(shareName) {
       let quantity = 0;
@@ -96,14 +98,20 @@ export default {
       Object.keys(this.groups).forEach(holding => {
         totalDifference += parseFloat(this.getDifference(holding))
       });
-      return totalDifference.toFixed(3);
+      return totalDifference.toFixed(2);
     },getTotalValue(){
       let totalValue = 0;
       Object.keys(this.groups).forEach(holding => {
         totalValue += parseFloat(this.getCurrentValue(holding))
       });
-      return totalValue.toFixed(3);
-    },
+      return totalValue.toFixed(2);
+    },getTotalSpent(){
+      let totalValue = 0;
+      Object.keys(this.groups).forEach(holding => {
+        totalValue += parseFloat(this.getTotalPaid(holding))
+      });
+      return totalValue.toFixed(2);
+    }
   }
 };
 </script>

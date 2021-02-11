@@ -49,8 +49,13 @@ export default {
         firstDay = new Date(y, m, 1).setHours(0, 0, 0, 0);
         lastDay = new Date(y, m + 1, 0).setHours(23, 59, 59, 999);
       } else if (this.type == "yearly") {
-        firstDay = new Date(y, 6, 1).setHours(0, 0, 0, 0);
-        lastDay = new Date(y + 1, 5, 30).setHours(23, 59, 59, 999);
+        if (m < 7) {
+          firstDay = new Date(y - 1, 6, 1).setHours(0, 0, 0, 0);
+          lastDay = new Date(y, 5, 30).setHours(23, 59, 59, 999);
+        } else {
+          firstDay = new Date(y, 6, 1).setHours(0, 0, 0, 0);
+          lastDay = new Date(y + 1, 5, 30).setHours(23, 59, 59, 999);
+        }
       } else {
         firstDay = 0;
         lastDay = 9999999999999;
