@@ -35,13 +35,13 @@
         </v-toolbar>
         <v-card-text>
           <v-form v-on:submit.prevent="addToDatabase()">
-            <v-select
+            <v-autocomplete
               v-model="shareName"
               :items="shareList"
               label="Share Name"
               item-text="shareName"
               required
-            ></v-select>
+            ></v-autocomplete>
 
             <v-text-field
               v-model="quantity"

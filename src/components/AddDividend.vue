@@ -24,13 +24,13 @@
         </v-toolbar>
         <v-card-text>
           <v-form v-on:submit.prevent="addToDatabase()">
-            <v-select
+            <v-autocomplete
               v-model="shareName"
               :items="shareList"
               label="Share Name"
               item-text="shareName"
               required
-            ></v-select>
+            ></v-autocomplete>
 
             <v-text-field
               v-model="quantity"
@@ -85,7 +85,7 @@ export default {
       quantity: "",
       date: Date.now(),
       dialog: false,
-      type: "dividend",
+      type: "dividend"
     };
   },
   methods: {
@@ -98,10 +98,10 @@ export default {
         type: this.type,
         isSold: true,
         brokerageFee: 0,
-        owner: this.$store.state.user,
+        owner: this.$store.state.user
       });
       setTimeout(() => this.$router.push("/"), 1000);
-    },
+    }
   },
   computed: {
     totalValue() {
@@ -119,8 +119,8 @@ export default {
     },
     total() {
       return this.price * this.quantity;
-    },
-  },
+    }
+  }
 };
 </script>
 

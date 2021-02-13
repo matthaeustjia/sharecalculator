@@ -15,6 +15,7 @@
           <v-text-field
             v-model="quantity"
             label="Quantity"
+            pm
             required
             type="number"
           ></v-text-field>
