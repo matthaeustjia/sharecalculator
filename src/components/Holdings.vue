@@ -1,34 +1,31 @@
 <template>
   <div>
-    Holding
     <v-simple-table dense>
       <template v-slot:default>
         <thead>
           <tr>
             <th class="text-left">Name</th>
-            <th class="text-left">Quantity</th>
             <th class="text-left">Average</th>
+            <th class="text-left">Difference(%)</th>
+            <th class="text-left">Quantity</th>
             <th class="text-left">Latest</th>
             <th class="text-left">Total Paid</th>
             <th class="text-left">Current Value</th>
-            <th class="text-left">Difference</th>
-            <th class="text-left">%</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(key, value) in groups" :key="value">
             <td>{{ value }}</td>
-            <td>{{ getTotalQuantity(value) }}</td>
             <td>${{ getAveragePrice(value) }}</td>
+            <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
+              ${{ getDifference(value) }} (%{{
+                getDifferencePercentage(value)
+              }})
+            </td>
+            <td>{{ getTotalQuantity(value) }}</td>
             <td>${{ getSharePrice(value) }}</td>
             <td>${{ getTotalPaid(value) }}</td>
             <td>${{ getCurrentValue(value) }}</td>
-            <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
-              ${{ getDifference(value) }}
-            </td>
-            <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
-              %{{ getDifferencePercentage(value) }}
-            </td>
           </tr>
         </tbody>
       </template>
@@ -36,7 +33,7 @@
 
     Total Spent
     <div>${{ getTotalSpent }}</div>
-    Total Current Value
+    Holdings
     <div>${{ getTotalValue }}</div>
     Total Difference
     <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
@@ -87,12 +84,18 @@ export default {
   data() {
     return {
       price: "",
-      groups: this.$store.getters.groups,
-      sharePrice: this.$store.state.sharePrice,
-      holdings: this.$store.getters.isNotSold
     };
   },
   computed:{
+    groups(){
+      return this.$store.getters.groups
+    },
+    sharePrice(){
+      return this.$store.state.sharePrice
+    },
+    holdings(){
+      return this.$store.getters.isNotSold
+    },
     getTotalDifference(){
       let totalDifference = 0;
       Object.keys(this.groups).forEach(holding => {

@@ -14,6 +14,9 @@
       <v-btn to="/management">
         <v-icon>build</v-icon>
       </v-btn>
+      <v-btn to="/calculator">
+        <v-icon>credit_card</v-icon>
+      </v-btn>
       <v-btn @click="signOut()">
         <v-icon>exit_to_app</v-icon>
       </v-btn>
@@ -29,13 +32,13 @@ export default {
       auth.signOut();
       this.$store.commit("setUser", "");
       this.$router.push("/login");
-    },
+    }
   },
   computed: {
     user() {
       return this.$store.state.user;
-    },
-  },
+    }
+  }
 };
 </script>
 

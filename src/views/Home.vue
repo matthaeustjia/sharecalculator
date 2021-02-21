@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-container class="d-flex flex-column justify-center" v-if="!dialog">
+      <div><Holdings /></div>
       <v-btn x-large block @click="openDialog('daily')">Daily</v-btn>
       <v-btn x-large block @click="openDialog('weekly')">Weekly</v-btn>
       <v-btn x-large block @click="openDialog('monthly')">Monthly</v-btn>

@@ -22,7 +22,7 @@ import { db } from "@/firebase";
 export default {
   data() {
     return {
-      shareName: "",
+      shareName: ""
     };
   },
   computed: {
@@ -31,25 +31,25 @@ export default {
         return true;
       }
       return false;
-    },
+    }
   },
   methods: {
     addStock() {
       var shareName = this.shareName.toUpperCase();
       db.ref("ShareList").push({
         shareName: this.shareName.toUpperCase(),
-        owner: this.$store.state.user,
+        owner: this.$store.state.user
       });
       db.ref("sharePrice")
         .child(shareName)
         .set({
           shareName: shareName,
           nextUpdate: 0,
-          price: 0,
+          price: 0
         });
       this.$router.push("/");
-    },
-  },
+    }
+  }
 };
 </script>
 

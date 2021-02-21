@@ -15,21 +15,21 @@ export default {
   name: "App",
 
   components: {
-    BottomNavigation,
+    BottomNavigation
   },
   created() {
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(user => {
       this.$store.commit("setUser", user);
       this.$router.push("/");
     });
-  },
+  }
 };
 </script>
 <style lang="scss">
 .bg-red {
-  background-color: red;
+  color: red;
 }
 .bg-green {
-  background-color: green;
+  color: green;
 }
 </style>

@@ -30,7 +30,7 @@ export default new Vuex.Store({
       state.orderList.push(orderList);
     },
     setUser(state, user) {
-      if (user == "logout") {
+      if (!user) {
         state.user = null;
       } else {
         state.user = user.email;
