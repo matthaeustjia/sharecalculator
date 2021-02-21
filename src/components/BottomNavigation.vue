@@ -11,9 +11,6 @@
       <v-btn to="/orders">
         <v-icon>filter_list</v-icon>
       </v-btn>
-      <v-btn to="/management">
-        <v-icon>build</v-icon>
-      </v-btn>
       <v-btn to="/calculator">
         <v-icon>credit_card</v-icon>
       </v-btn>

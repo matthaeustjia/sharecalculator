@@ -177,6 +177,11 @@
         </v-card>
       </v-dialog>
     </v-row>
+    <div>
+      <v-btn to="/management" lass="capitalised" block color="warning" dark>
+        Manage</v-btn
+      >
+    </div>
   </div>
 </template>
 
