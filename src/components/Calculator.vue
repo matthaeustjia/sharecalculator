@@ -12,14 +12,34 @@
           ></v-select
         ></v-row>
         <v-row>
-          <v-text-field
-            v-model="quantity"
-            label="Quantity"
-            pm
-            required
-            type="number"
-          ></v-text-field>
+          <v-col>
+            <v-select
+              label="Quantity/Value($)"
+              v-model="selectedOptions"
+              :items="options"
+            ></v-select>
+          </v-col>
+          <v-col v-if="selectedOptions == 'Quantity'">
+            <v-text-field
+              v-model="quantity"
+              label="Quantity"
+              required
+              type="number"
+            ></v-text-field
+          ></v-col>
+          <v-col v-else>
+            <v-text-field
+              v-model="value"
+              label="Value ($)"
+              required
+              type="number"
+            ></v-text-field
+          ></v-col>
+          <v-col v-if="computedQuantity && selectedOptions == 'Value'">
+            {{ computedQuantity }} units</v-col
+          >
         </v-row>
+        <v-row> </v-row>
         <v-row>
           <v-text-field
             v-model="buyPrice"
@@ -63,6 +83,9 @@ export default {
   data() {
     return {
       brokerList: ["SelfWealth", "Commsec"],
+      options: ["Quantity", "Value"],
+      value: "",
+      selectedOptions: "Quantity",
       quantity: "",
       buyPrice: "",
       sellPrice: "",
@@ -70,12 +93,19 @@ export default {
     };
   },
   computed: {
+    computedQuantity() {
+      if (this.selectedOptions == "Quantity") return this.quantity;
+      else {
+        return parseInt(this.value / this.buyPrice);
+      }
+    },
     total() {
-      return this.quantity * this.sellPrice;
+      return this.computedQuantity * this.sellPrice;
     },
     totalProfit() {
       return parseFloat(
-        (this.sellPrice - this.buyPrice) * this.quantity - this.brokerFee
+        (this.sellPrice - this.buyPrice) * this.computedQuantity -
+          this.brokerFee
       ).toFixed(3);
     },
     valueDifference() {
