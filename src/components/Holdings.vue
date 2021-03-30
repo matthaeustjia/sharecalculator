@@ -18,14 +18,14 @@
             <td>{{ value }}</td>
             <td>${{ getAveragePrice(value) }}</td>
             <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
-              ${{ getDifference(value) }} (%{{
+              ${{ getDifference(value).toLocaleString() }} (%{{
                 getDifferencePercentage(value)
               }})
             </td>
             <td>{{ getTotalQuantity(value) }}</td>
             <td>${{ getSharePrice(value) }}</td>
-            <td>${{ getTotalPaid(value) }}</td>
-            <td>${{ getCurrentValue(value) }}</td>
+            <td>${{ getTotalPaid(value).toLocaleString() }}</td>
+            <td>${{ getCurrentValue(value).toLocaleString() }}</td>
           </tr>
         </tbody>
       </template>
@@ -101,19 +101,19 @@ export default {
       Object.keys(this.groups).forEach(holding => {
         totalDifference += parseFloat(this.getDifference(holding))
       });
-      return totalDifference.toFixed(2);
+      return totalDifference.toLocaleString();
     },getTotalValue(){
       let totalValue = 0;
       Object.keys(this.groups).forEach(holding => {
         totalValue += parseFloat(this.getCurrentValue(holding))
       });
-      return totalValue.toFixed(2);
+      return totalValue.toLocaleString();
     },getTotalSpent(){
       let totalValue = 0;
       Object.keys(this.groups).forEach(holding => {
         totalValue += parseFloat(this.getTotalPaid(holding))
       });
-      return totalValue.toFixed(2);
+      return totalValue.toLocaleString();
     }
   }
 };
