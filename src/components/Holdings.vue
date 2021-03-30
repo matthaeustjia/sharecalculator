@@ -49,7 +49,7 @@ export default {
       return parseFloat(parseFloat(this.getCurrentValue(shareName)-this.getTotalPaid (shareName)).toFixed(2));
     },
     getDifferencePercentage(shareName){
-      return parseFloat(parseFloat(this.getAveragePrice(shareName)-this.getSharePrice(shareName)).toFixed(2)/this.getAveragePrice(shareName)*100).toFixed(2);
+      return parseFloat(parseFloat(this.getSharePrice(shareName)-this.getAveragePrice(shareName)).toFixed(2)/this.getAveragePrice(shareName)*100).toFixed(2);
     },
     getCurrentValue(shareName){
       return parseFloat(this.getSharePrice(shareName)*this.getTotalQuantity(shareName))
