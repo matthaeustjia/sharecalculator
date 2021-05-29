@@ -1,193 +1,194 @@
 <template>
   <div>
-    <v-select
-      v-model="shareName"
-      :items="shareList"
-      label="Share Name"
-      item-text="shareName"
-      required
-    ></v-select>
-    <v-dialog
-      ref="startDialog"
-      v-model="startDateModal"
-      :return-value.sync="startDate"
-      persistent
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="startDate"
-          label="Select startDate"
-          readonly
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker v-model="startDate" scrollable>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="$refs.startDialog.save(startDate)"
-          >OK</v-btn
-        >
-      </v-date-picker>
-    </v-dialog>
-    <v-dialog
-      ref="endDialog"
-      v-model="endDateModal"
-      :return-value.sync="endDate"
-      persistent
-    >
-      <template v-slot:activator="{ on }">
-        <v-text-field
-          v-model="endDate"
-          label="Select endDate"
-          readonly
-          v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker v-model="endDate" scrollable>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="$refs.endDialog.save(endDate)">OK</v-btn>
-      </v-date-picker>
-    </v-dialog>
-    <v-row justify="center">
+    <MainBox>
+      <v-select
+        v-model="shareName"
+        :items="shareList"
+        label="Share Name"
+        item-text="shareName"
+        required
+      ></v-select>
       <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
+        ref="startDialog"
+        v-model="startDateModal"
+        :return-value.sync="startDate"
+        persistent
       >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            block
-            @click="getOrders"
-            color="success"
-            dark
-            v-bind="attrs"
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="startDate"
+            label="Select startDate"
+            readonly
             v-on="on"
-            >View</v-btn
-          >
+          ></v-text-field>
         </template>
-        <v-card>
-          <v-toolbar dark>
-            <v-btn block dark text @click="dialog = false">Close</v-btn>
-          </v-toolbar>
-          <v-list rounded three-line subheader>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title
-                  :class="totalProfit > 0 ? 'bg-green' : 'bg-red'"
-                >
-                  Profit ${{
-                    totalProfit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}
-                </v-list-item-title>
-                <v-list-item-title
-                  :class="totalProfit > 0 ? 'bg-green' : 'bg-red'"
-                >
-                  NPAT ${{
-                    totalProfitAfterTax
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}
-                </v-list-item-title>
-                <v-list-item-subtitle>
-                  Buy ${{
-                    totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}
-                </v-list-item-subtitle>
-                <v-list-item-subtitle>
-                  Sell ${{
-                    totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}
-                </v-list-item-subtitle>
-                <v-list-item-subtitle class="bg-red">
-                  Fee ${{
-                    totalBrokerageFee
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}
-                </v-list-item-subtitle>
-                <v-list-item-subtitle class="bg-red">
-                  Tax ${{
-                    totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }}
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-subtitle>
-                  <v-simple-table dense>
-                    <template v-slot:default>
-                      <thead>
-                        <tr>
-                          <th class="text-left">Name</th>
-                          <th class="text-left">Price</th>
-                          <th class="text-left">Quantity</th>
-                          <th class="text-left">Total</th>
-                          <th class="text-left">Broker Fee</th>
-                          <th class="text-left">Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr
-                          v-for="history in orderHistory.slice().reverse()"
-                          :key="history.name"
-                        >
-                          <td
-                            :class="
-                              history.type == 'buy' ? 'bg-green' : 'bg-red'
-                            "
-                          >
-                            {{ history.shareName }}
-                          </td>
-                          <td>${{ history.price }}</td>
-                          <td>{{ history.quantity }}</td>
-                          <td>
-                            ${{
-                              (history.price * history.quantity)
-                                .toFixed(3)
-                                .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                            }}
-                          </td>
-                          <td>${{ history.brokerageFee }}</td>
-                          <td>
-                            {{
-                              new Date(history.date).toLocaleDateString([], {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                second: "2-digit"
-                              })
-                            }}
-                          </td>
-                          <td class="text-right">
-                            <v-btn
-                              @click="deleteOrder(history)"
-                              small
-                              color="error"
-                              >Delete</v-btn
-                            >
-                          </td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>
+        <v-date-picker v-model="startDate" scrollable>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="$refs.startDialog.save(startDate)"
+            >OK</v-btn
+          >
+        </v-date-picker>
       </v-dialog>
-    </v-row>
-    <div>
-      <v-btn to="/management" lass="capitalised" block color="warning" dark>
-        Manage</v-btn
+      <v-dialog
+        ref="endDialog"
+        v-model="endDateModal"
+        :return-value.sync="endDate"
+        persistent
       >
-    </div>
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="endDate"
+            label="Select endDate"
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker v-model="endDate" scrollable>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="$refs.endDialog.save(endDate)"
+            >OK</v-btn
+          >
+        </v-date-picker>
+      </v-dialog>
+      <v-row justify="center">
+        <v-dialog
+          v-model="dialog"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              block
+              @click="getOrders"
+              color="success"
+              dark
+              v-bind="attrs"
+              v-on="on"
+              >View</v-btn
+            >
+          </template>
+          <v-card>
+            <v-toolbar dark>
+              <v-btn block dark text @click="dialog = false">Close</v-btn>
+            </v-toolbar>
+            <v-list rounded three-line subheader>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title
+                    :class="totalProfit > 0 ? 'bg-green' : 'bg-red'"
+                  >
+                    Profit ${{
+                      totalProfit
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-title
+                    :class="totalProfit > 0 ? 'bg-green' : 'bg-red'"
+                  >
+                    NPAT ${{
+                      totalProfitAfterTax
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    Buy ${{
+                      totalBuy.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    Sell ${{
+                      totalSell.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="bg-red">
+                    Fee ${{
+                      totalBrokerageFee
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle class="bg-red">
+                    Tax ${{
+                      totalTax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }}
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-subtitle>
+                    <v-simple-table dense>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-left">Name</th>
+                            <th class="text-left">Price</th>
+                            <th class="text-left">Quantity</th>
+                            <th class="text-left">Total</th>
+                            <th class="text-left">Broker Fee</th>
+                            <th class="text-left">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            v-for="history in orderHistory.slice().reverse()"
+                            :key="history.name"
+                          >
+                            <td
+                              :class="
+                                history.type == 'buy' ? 'bg-green' : 'bg-red'
+                              "
+                            >
+                              {{ history.shareName }}
+                            </td>
+                            <td>${{ history.price }}</td>
+                            <td>{{ history.quantity }}</td>
+                            <td>
+                              ${{
+                                (history.price * history.quantity)
+                                  .toFixed(3)
+                                  .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                              }}
+                            </td>
+                            <td>${{ history.brokerageFee }}</td>
+                            <td>
+                              {{
+                                new Date(history.date).toLocaleDateString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  second: "2-digit"
+                                })
+                              }}
+                            </td>
+                            <td class="text-right">
+                              <v-btn
+                                @click="deleteOrder(history)"
+                                small
+                                color="error"
+                                >Delete</v-btn
+                              >
+                            </td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </MainBox>
   </div>
 </template>
 
 <script>
 import { db } from "@/firebase";
-
+import MainBox from "@/components/MainBox";
 export default {
   data() {
     return {
@@ -205,6 +206,9 @@ export default {
       shareList: this.$store.state.shareList,
       orderHistory: []
     };
+  },
+  components: {
+    MainBox
   },
   computed: {
     totalTax() {

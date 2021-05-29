@@ -1,32 +1,36 @@
 <template>
-  <div class="invest-box">
-    <div class="invest-header">
-      <span> Account Balance </span>
-      <div>${{ getTotalValue }}</div>
-    </div>
-    <div class="invest-sub">
-      Total Spent
-      <div>${{ getTotalSpent }}</div>
-    </div>
-
-    <div class="invest-sub">
-      Total Difference
-      <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
-        ${{ getTotalDifference }}
+  <div>
+    <MainBox>
+      <div class="invest-header">
+        <span> Account Balance </span>
+        <div>${{ getTotalValue }}</div>
       </div>
-    </div>
+      <div class="invest-sub">
+        Total Spent
+        <div>${{ getTotalSpent }}</div>
+      </div>
 
+      <div class="invest-sub">
+        Total Difference
+        <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
+          ${{ getTotalDifference }}
+        </div>
+      </div>
+    </MainBox>
     <div class="invest-button">
-      <v-tabs>
+      <v-tabs fixed-tabs>
         <v-tab>Value</v-tab>
         <v-tab>Diversiciation</v-tab>
       </v-tabs>
+    </div>
+    <div class="chart">
+      <apexchart type="pie" :options="options" :series="series"></apexchart>
     </div>
   </div>
 </template>
 
 <script>
-
+import MainBox from "@/components/MainBox";
 export default {
   methods: {
     getDifference(shareName){
@@ -68,18 +72,18 @@ export default {
   data() {
     return {
       price: "",
-       options: {
-        chart: {
-          id: 'vuechart-example'
-        },
-        xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-        }
+      options: {
+        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+         legend: {
+          show: false,
+          },
+         theme: {
+              monochrome: {
+                enabled: true
+              }
+         }
       },
-      series: [{
-        name: 'series-1',
-        data: [30, 40, 45, -25, 50, 49, 60, 70, 91]
-      }]
+      series: [44, 55, 41, 17, 15]
     };
   },
   computed:{
@@ -114,21 +118,14 @@ export default {
       });
       return totalValue.toLocaleString();
     }
-  }
+  },
+  components: {
+    MainBox,
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.invest-box {
-  padding: 1rem;
-  margin: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: darkgray;
-  border-radius: 0.2rem;
-}
-
 .invest-header {
   margin-bottom: 1rem;
   font-size: 1.2rem;
@@ -142,6 +139,10 @@ export default {
 .invest-button {
   background-color: transparent;
   font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+}
+.chart {
   display: flex;
   justify-content: center;
 }

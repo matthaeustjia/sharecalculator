@@ -1,72 +1,74 @@
 <template>
-  <v-container>
-    <v-form>
-      <v-container class="v-flex">
-        <v-row
-          ><v-select
-            v-model="broker"
-            label="Broker"
-            :items="brokerList"
-            item-text="shareName"
-            required
-          ></v-select
-        ></v-row>
-        <v-row>
-          <v-col>
-            <v-select
-              label="Quantity/Value($)"
-              v-model="selectedOptions"
-              :items="options"
-            ></v-select>
-          </v-col>
-          <v-col v-if="selectedOptions == 'Quantity'">
+  <div>
+    <MainBox>
+      <v-form>
+        <v-container class="v-flex">
+          <v-row
+            ><v-select
+              v-model="broker"
+              label="Broker"
+              :items="brokerList"
+              item-text="shareName"
+              required
+            ></v-select
+          ></v-row>
+          <v-row>
+            <v-col>
+              <v-select
+                label="Quantity/Value($)"
+                v-model="selectedOptions"
+                :items="options"
+              ></v-select>
+            </v-col>
+            <v-col v-if="selectedOptions == 'Quantity'">
+              <v-text-field
+                v-model="quantity"
+                label="Quantity"
+                required
+                type="number"
+              ></v-text-field
+            ></v-col>
+            <v-col v-else>
+              <v-text-field
+                v-model="value"
+                label="Value ($)"
+                required
+                type="number"
+              ></v-text-field
+            ></v-col>
+            <v-col v-if="computedQuantity && selectedOptions == 'Value'">
+              {{ computedQuantity }} units</v-col
+            >
+          </v-row>
+          <v-row> </v-row>
+          <v-row>
             <v-text-field
-              v-model="quantity"
-              label="Quantity"
+              v-model="buyPrice"
+              label="Buying Price"
               required
               type="number"
-            ></v-text-field
-          ></v-col>
-          <v-col v-else>
+            ></v-text-field>
+          </v-row>
+          <v-row>
             <v-text-field
-              v-model="value"
-              label="Value ($)"
+              v-model="sellPrice"
+              label="Selling Price"
               required
               type="number"
-            ></v-text-field
-          ></v-col>
-          <v-col v-if="computedQuantity && selectedOptions == 'Value'">
-            {{ computedQuantity }} units</v-col
-          >
-        </v-row>
-        <v-row> </v-row>
-        <v-row>
-          <v-text-field
-            v-model="buyPrice"
-            label="Buying Price"
-            required
-            type="number"
-          ></v-text-field>
-        </v-row>
-        <v-row>
-          <v-text-field
-            v-model="sellPrice"
-            label="Selling Price"
-            required
-            type="number"
-          ></v-text-field>
-        </v-row>
-        <v-row>
-          <v-text-field
-            readonly
-            v-model="brokerFee"
-            label="BrokerageFee"
-            required
-            type="number"
-          ></v-text-field>
-        </v-row>
-      </v-container>
-    </v-form>
+            ></v-text-field>
+          </v-row>
+          <v-row>
+            <v-text-field
+              readonly
+              v-model="brokerFee"
+              label="BrokerageFee"
+              required
+              type="number"
+            ></v-text-field>
+          </v-row>
+        </v-container>
+      </v-form>
+    </MainBox>
     <v-alert v-if="totalProfit > 0" color="success">
       <div>${{ totalProfit }}</div>
       <div>{{ getDifferencePercentage }}%</div>
@@ -74,11 +76,12 @@
     <v-alert v-else color="error">
       <div>${{ totalProfit }}</div>
       <div>{{ getDifferencePercentage }}%</div>
-    </v-alert></v-container
-  >
+    </v-alert>
+  </div>
 </template>
 
 <script>
+import MainBox from "@/components/MainBox";
 export default {
   data() {
     return {
@@ -131,6 +134,9 @@ export default {
         }
       }
     }
+  },
+  components: {
+    MainBox
   }
 };
 </script>

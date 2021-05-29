@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
       <v-container class="header">
-        <span class="logo">LOGO</span>
+        <img height="24" width="24" src="/img/icons/favicon.ico" />
         <span class="font-header"> Trading Account </span>
       </v-container>
       <router-view></router-view>
