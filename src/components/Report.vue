@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <MainBox>
       <v-card-title class="capitalize">
         {{ type }} report
         <v-spacer></v-spacer>
@@ -30,7 +30,8 @@
         ></v-select>
         <v-btn class="warning" block @click="clearSearch">Clear</v-btn>
       </v-card-subtitle>
-
+    </MainBox>
+    <v-card>
       <v-data-table
         mobile-breakpoint="0"
         dense
@@ -56,6 +57,7 @@
 </template>
 
 <script>
+import MainBox from "@/components/MainBox";
 export default {
   data() {
     return {
@@ -185,7 +187,10 @@ export default {
       );
     }
   },
-  props: ["dateRanges", "type"]
+  props: ["dateRanges", "type"],
+  components: {
+    MainBox
+  }
 };
 </script>
 

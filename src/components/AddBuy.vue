@@ -4,21 +4,19 @@
       <template v-slot:activator="{ on, attrs }">
         <v-container>
           <v-btn
-            class="capitalised"
+            class="addstock-button"
             @click="type = 'buy'"
             block
             color="success"
-            dark
             v-bind="attrs"
             v-on="on"
           >
             Buy Stock </v-btn
           ><v-btn
-            class="capitalised"
+            class="addstock-button"
             @click="type = 'sell'"
             block
             color="error"
-            dark
             v-bind="attrs"
             v-on="on"
           >
@@ -29,7 +27,7 @@
       <v-card class="elevation-12">
         <v-toolbar>
           <v-card-title>
-            <span class="capitalised">{{ type }} Stock</span>
+            <span class="addstock-button">{{ type }} Stock</span>
           </v-card-title>
           <v-spacer></v-spacer>
         </v-toolbar>
@@ -185,7 +183,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.capitalised {
+.addstock-button {
   text-transform: capitalize;
+  margin-bottom: 0.3rem;
 }
 </style>

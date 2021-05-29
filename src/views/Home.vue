@@ -2,17 +2,32 @@
   <div>
     <v-container class="d-flex flex-column justify-center" v-if="!dialog">
       <div><Holdings /></div>
-      <v-btn x-large block @click="openDialog('daily')">Daily</v-btn>
-      <v-btn x-large block @click="openDialog('weekly')">Weekly</v-btn>
-      <v-btn x-large block @click="openDialog('monthly')">Monthly</v-btn>
-      <v-btn x-large block @click="openDialog('yearly')">Yearly</v-btn>
-      <v-btn x-large block @click="openDialog('all')">All</v-btn>
-      <v-btn x-large block @click="openDialog('holdings')">Holdings</v-btn>
+      <div class="date-option">
+        <v-btn class="date-option-button" @click="openDialog('daily')"
+          >1D</v-btn
+        >
+        <v-btn class="date-option-button" @click="openDialog('weekly')"
+          >1W</v-btn
+        >
+        <v-btn class="date-option-button" @click="openDialog('monthly')"
+          >1M</v-btn
+        >
+        <v-btn class="date-option-button" @click="openDialog('yearly')"
+          >1Y</v-btn
+        >
+        <v-btn class="date-option-button" @click="openDialog('all')">All</v-btn>
+      </div>
     </v-container>
     <div v-else>
-      <v-btn @click="closeDialog" block class="error">Close</v-btn>
       <Holdings v-if="type == 'holdings'" />
       <Report v-else v-bind:type="type" v-bind:dateRanges="dateRanges" />
+      <v-btn
+        color="error"
+        @click="closeDialog"
+        block
+        class="close-dialog-button"
+        >Close</v-btn
+      >
     </div>
   </div>
 </template>
@@ -138,4 +153,18 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.close-dialog-button {
+  position: absolute;
+  bottom: 0;
+}
+.date-option {
+  display: flex;
+  justify-content: center;
+}
+
+.date-option-button {
+  margin-left: 0.15rem;
+  margin-right: 0.15rem;
+}
+</style>

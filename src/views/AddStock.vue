@@ -1,13 +1,8 @@
 <template>
   <div>
-    <MainBox
-      ><v-tabs fixed-tabs dark>
-        <v-tab @click="type = 'stock'">Stock</v-tab>
-        <v-tab @click="type = 'dividend'">Dividend</v-tab>
-      </v-tabs>
-
-      <AddBuy v-if="type == 'stock'"/>
-      <AddDividend v-else
+    <MainBox>
+      <AddBuy />
+      <AddDividend
     /></MainBox>
   </div>
 </template>

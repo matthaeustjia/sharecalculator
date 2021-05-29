@@ -6,8 +6,7 @@
           <v-btn
             class="capitalised"
             block
-            color="success"
-            dark
+            color="warning"
             v-bind="attrs"
             v-on="on"
           >

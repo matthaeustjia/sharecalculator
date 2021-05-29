@@ -14,7 +14,7 @@ export default {};
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: darkgray;
+  background-color: whitesmoke;
   border-radius: 0.2rem;
 }
 </style>

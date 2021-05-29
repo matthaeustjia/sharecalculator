@@ -5,10 +5,7 @@ import "material-design-icons-iconfont/dist/material-design-icons.css"; // Ensur
 Vue.use(Vuetify);
 
 export default new Vuetify({
-    theme: {
-        dark: true
-    },
-    icons: {
-        iconfont: "md"
-    }
+  icons: {
+    iconfont: "md"
+  }
 });

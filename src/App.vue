@@ -34,8 +34,8 @@ export default {
   height: 15vh;
   background-image: linear-gradient(
     to right bottom,
-    rgba(53, 33, 151, 0.8),
-    rgba(47, 24, 175, 0.8)
+    rgba(22, 6, 102, 0.8),
+    rgba(14, 6, 65, 0.8)
   );
   padding-bottom: 5rem;
   margin-bottom: -5rem;
