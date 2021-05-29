@@ -1,7 +1,7 @@
 <template>
   <div class="invest-box">
     <div class="invest-header">
-      Current Value Balance
+      <span> Account Balance </span>
       <div>${{ getTotalValue }}</div>
     </div>
     <div class="invest-sub">
@@ -17,7 +17,10 @@
     </div>
 
     <div class="invest-button">
-      <v-btn>Value</v-btn><v-btn>Diversification</v-btn>
+      <v-tabs>
+        <v-tab>Value</v-tab>
+        <v-tab>Diversiciation</v-tab>
+      </v-tabs>
     </div>
   </div>
 </template>
@@ -123,6 +126,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   background-color: darkgray;
+  border-radius: 0.2rem;
 }
 
 .invest-header {
@@ -136,6 +140,8 @@ export default {
 }
 
 .invest-button {
+  background-color: transparent;
+  font-size: 0.7rem;
   display: flex;
   justify-content: center;
 }

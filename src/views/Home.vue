@@ -1,9 +1,5 @@
 <template>
   <div>
-    <v-container class="header">
-      <span class="logo">LOGO</span>
-      Trading Account
-    </v-container>
     <v-container class="d-flex flex-column justify-center" v-if="!dialog">
       <div><Holdings /></div>
       <v-btn x-large block @click="openDialog('daily')">Daily</v-btn>
@@ -142,15 +138,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.header {
-  height: 20vh;
-  background-image: linear-gradient(
-    to right bottom,
-    rgba(117, 95, 228, 0.8),
-    rgba(86, 68, 184, 0.8)
-  );
-  padding-bottom: 7rem;
-  margin-bottom: -7rem;
-}
-</style>
+<style lang="scss" scoped></style>
