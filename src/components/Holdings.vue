@@ -126,22 +126,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.invest-header {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-}
-
-.invest-sub {
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-}
-
-.invest-button {
-  background-color: transparent;
-  font-size: 0.7rem;
-  display: flex;
-  justify-content: center;
-}
 .chart {
   display: flex;
   justify-content: center;

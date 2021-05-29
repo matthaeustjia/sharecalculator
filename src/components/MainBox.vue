@@ -17,4 +17,21 @@ export default {};
   background-color: whitesmoke;
   border-radius: 0.2rem;
 }
+
+.invest-header {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.invest-sub {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.invest-button {
+  background-color: transparent;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: center;
+}
 </style>

@@ -1,6 +1,9 @@
 <template>
   <div>
     <MainBox>
+      <div class="invest-header">
+        <span> Add Stock </span>
+      </div>
       <AddBuy />
       <AddDividend
     /></MainBox>
