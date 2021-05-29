@@ -155,8 +155,8 @@ export default {
 
 <style lang="scss" scoped>
 .close-dialog-button {
-  position: absolute;
-  bottom: 0;
+  position: fixed;
+  bottom: 3.5rem;
 }
 .date-option {
   display: flex;

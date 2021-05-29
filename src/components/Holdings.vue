@@ -2,7 +2,7 @@
   <div>
     <MainBox>
       <div class="invest-header">
-        <span> Account Balance </span>
+        <span> ACCOUNT BALANCE </span>
         <div>${{ getTotalValue }}</div>
       </div>
       <div class="invest-sub">
@@ -12,9 +12,7 @@
 
       <div class="invest-sub">
         Total Difference
-        <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
-          ${{ getTotalDifference }}
-        </div>
+        <div class="text-green">${{ getTotalDifference }}</div>
       </div>
     </MainBox>
     <div class="invest-button">

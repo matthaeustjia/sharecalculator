@@ -9,13 +9,13 @@
         {{ new Date(dateRanges.firstDay).toLocaleDateString() }} -
         {{ new Date(dateRanges.lastDay).toLocaleDateString() }}</v-card-subtitle
       >
-      <v-card-subtitle :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
+      <v-card-subtitle :class="totalProfit > 0 ? 'text-green' : 'text-red'">
         Profit ${{ totalProfit.toLocaleString() }}
       </v-card-subtitle>
-      <v-card-subtitle>
+      <v-card-subtitle :class="totalDividend > 0 ? 'text-green' : ''">
         Dividend ${{ totalDividend.toLocaleString() }}
       </v-card-subtitle>
-      <v-card-subtitle class="bg-red">
+      <v-card-subtitle class="text-red">
         Fees ${{ totalBrokerageFee.toLocaleString() }}
       </v-card-subtitle>
       <v-card-subtitle>
@@ -90,7 +90,7 @@ export default {
       return parseFloat(parseFloat(share.quantity * share.price).toFixed(3));
     },
     typeBackground(item) {
-      return item.type == "buy" ? "bg-green" : "bg-red";
+      return item.type == "buy" ? "text-green" : "text-red";
     }
   },
   computed: {

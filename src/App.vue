@@ -1,11 +1,13 @@
 <template>
   <v-app>
     <v-main>
-      <v-container class="header">
+      <v-container fluid class="header">
         <img height="24" width="24" src="/img/icons/favicon.ico" />
         <span class="font-header"> Trading Account </span>
       </v-container>
-      <router-view></router-view>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
     </v-main>
     <BottomNavigation />
   </v-app>
@@ -44,10 +46,10 @@ export default {
   font-size: 1.4rem;
   font-weight: 500;
 }
-.bg-red {
+.text-red {
   color: red;
 }
-.bg-green {
+.text-green {
   color: green;
 }
 </style>
