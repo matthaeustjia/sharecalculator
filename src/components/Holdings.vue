@@ -1,48 +1,29 @@
 <template>
-  <div>
-    <v-simple-table dense>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Name</th>
-            <th class="text-left">Average</th>
-            <th class="text-left">Difference(%)</th>
-            <th class="text-left">Quantity</th>
-            <th class="text-left">Latest</th>
-            <th class="text-left">Total Paid</th>
-            <th class="text-left">Current Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(key, value) in groups" :key="value">
-            <td>{{ value }}</td>
-            <td>${{ getAveragePrice(value) }}</td>
-            <td :class="getDifference(value) > 0 ? 'bg-green' : 'bg-red'">
-              ${{ getDifference(value).toLocaleString() }} (%{{
-                getDifferencePercentage(value)
-              }})
-            </td>
-            <td>{{ getTotalQuantity(value) }}</td>
-            <td>${{ getSharePrice(value) }}</td>
-            <td>${{ getTotalPaid(value).toLocaleString() }}</td>
-            <td>${{ getCurrentValue(value).toLocaleString() }}</td>
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+  <div class="invest-box">
+    <div class="invest-header">
+      Current Value Balance
+      <div>${{ getTotalValue }}</div>
+    </div>
+    <div class="invest-sub">
+      Total Spent
+      <div>${{ getTotalSpent }}</div>
+    </div>
 
-    Total Spent
-    <div>${{ getTotalSpent }}</div>
-    Holdings
-    <div>${{ getTotalValue }}</div>
-    Total Difference
-    <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
-      ${{ getTotalDifference }}
+    <div class="invest-sub">
+      Total Difference
+      <div :class="getTotalDifference > 0 ? 'bg-green' : 'bg-red'">
+        ${{ getTotalDifference }}
+      </div>
+    </div>
+
+    <div class="invest-button">
+      <v-btn>Value</v-btn><v-btn>Diversification</v-btn>
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   methods: {
     getDifference(shareName){
@@ -84,11 +65,26 @@ export default {
   data() {
     return {
       price: "",
+       options: {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+        }
+      },
+      series: [{
+        name: 'series-1',
+        data: [30, 40, 45, -25, 50, 49, 60, 70, 91]
+      }]
     };
   },
   computed:{
     groups(){
       return this.$store.getters.groups
+    },
+    orderList() {
+      return this.$store.state.orderList;
     },
     sharePrice(){
       return this.$store.state.sharePrice
@@ -119,4 +115,28 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.invest-box {
+  padding: 1rem;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: darkgray;
+}
+
+.invest-header {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.invest-sub {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.invest-button {
+  display: flex;
+  justify-content: center;
+}
+</style>

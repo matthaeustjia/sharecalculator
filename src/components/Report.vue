@@ -10,11 +10,13 @@
         {{ new Date(dateRanges.lastDay).toLocaleDateString() }}</v-card-subtitle
       >
       <v-card-subtitle :class="totalProfit > 0 ? 'bg-green' : 'bg-red'">
-        Profit ${{ totalProfit }}
+        Profit ${{ totalProfit.toLocaleString() }}
       </v-card-subtitle>
-      <v-card-subtitle> Dividend ${{ totalDividend }} </v-card-subtitle>
+      <v-card-subtitle>
+        Dividend ${{ totalDividend.toLocaleString() }}
+      </v-card-subtitle>
       <v-card-subtitle class="bg-red">
-        Fees ${{ totalBrokerageFee }}
+        Fees ${{ totalBrokerageFee.toLocaleString() }}
       </v-card-subtitle>
       <v-card-subtitle>
         <v-select

@@ -57,16 +57,16 @@ export default {
       email: "",
       password: "",
       error: "",
-      success: "",
+      success: ""
     };
   },
   methods: {
     signIn() {
       auth
         .signInWithEmailAndPassword(this.email, this.password)
-        .catch((error) => (this.error = error));
-    },
-  },
+        .catch(error => (this.error = error));
+    }
+  }
 };
 </script>
 
