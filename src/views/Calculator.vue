@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-container>
     <Calculator />
-  </div>
+  </v-container>
 </template>
 
 <script>

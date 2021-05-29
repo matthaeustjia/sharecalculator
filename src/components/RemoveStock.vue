@@ -12,7 +12,9 @@
           <tr v-for="(share, index) in shareList" :key="share.shareName">
             <td>{{ share.shareName }}</td>
             <td class="text-right">
-              <v-btn @click="deleteStock(share, index)" small color="error">Delete</v-btn>
+              <v-btn @click="deleteStock(share, index)" small color="error"
+                >Delete</v-btn
+              >
             </td>
           </tr>
         </tbody>

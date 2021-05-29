@@ -11,11 +11,12 @@
       </div>
 
       <div class="invest-sub">
-        Total Difference
+        <span v-if="getTotalDifference => 0">Profit</span>
+        <span v-else>Loss</span>
         <div class="text-green">${{ getTotalDifference }}</div>
       </div>
     </MainBox>
-    <div class="invest-button">
+    <div>
       <v-tabs fixed-tabs>
         <v-tab>Value</v-tab>
         <v-tab>Diversiciation</v-tab>

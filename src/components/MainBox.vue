@@ -9,8 +9,8 @@ export default {};
 <style lang="scss" scoped>
 .invest-box {
   min-height: 30vh;
-  padding: 1rem;
-  margin: 0.5rem;
+  padding-left: 1rem;
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -19,13 +19,13 @@ export default {};
 }
 
 .invest-header {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   font-size: 1.1rem;
   letter-spacing: -0.05em;
 }
 
 .invest-sub {
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   font-size: 0.9rem;
 }
 </style>

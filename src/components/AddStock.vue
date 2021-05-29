@@ -1,24 +1,26 @@
 <template>
   <div>
-    <v-text-field
-      v-model="shareName"
-      label="Share Name"
-      required
-      type="text"
-    ></v-text-field>
-    <v-btn
-      block
-      @click="addStock()"
-      color="success"
-      :disabled="!isValid"
-      class="mr-4"
-      >Add</v-btn
+    <MainBox>
+      <v-text-field
+        v-model="shareName"
+        label="Share Name"
+        required
+        type="text"
+      ></v-text-field>
+      <v-btn
+        @click="addStock()"
+        color="success"
+        :disabled="!isValid"
+        class="mr-4"
+        >Add</v-btn
+      ></MainBox
     >
   </div>
 </template>
 
 <script>
 import { db } from "@/firebase";
+import MainBox from "@/components/MainBox";
 export default {
   data() {
     return {
@@ -49,6 +51,9 @@ export default {
         });
       this.$router.push("/");
     }
+  },
+  components: {
+    MainBox
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <MainBox>
       <v-select
         v-model="shareName"
@@ -183,7 +183,7 @@
         </v-dialog>
       </v-row>
     </MainBox>
-  </div>
+  </v-container>
 </template>
 
 <script>

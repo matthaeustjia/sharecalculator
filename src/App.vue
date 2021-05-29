@@ -32,12 +32,14 @@ export default {
 };
 </script>
 <style lang="scss">
+body {
+  padding-bottom: 2.5rem;
+}
 .header {
   height: 15vh;
   background-image: linear-gradient(
-    to right bottom,
-    rgba(22, 6, 102, 0.8),
-    rgba(14, 6, 65, 0.8)
+    rgba(10, 13, 190, 0.8),
+    rgba(12, 9, 192, 0.8)
   );
   padding-bottom: 5rem;
   margin-bottom: -5rem;
@@ -45,6 +47,9 @@ export default {
 .font-header {
   font-size: 1.4rem;
   font-weight: 500;
+  color: white;
+  text-shadow: 0.04rem 0 0 #000, 0 -0.04rem 0 #000, 0 0.04rem 0 #000,
+    -0.04rem 0 0 #000;
 }
 .text-red {
   color: red;

@@ -33,10 +33,9 @@
     </MainBox>
     <v-card>
       <v-data-table
+        class="data-table"
         mobile-breakpoint="0"
-        dense
-        hide-default-footer
-        disable-pagination
+        items-per-page="5"
         :headers="headers"
         :items="orderHistory"
         :search="search"

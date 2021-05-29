@@ -19,6 +19,9 @@
       <v-btn to="/calculator">
         <v-icon>credit_card</v-icon>
       </v-btn>
+      <v-btn to="/management">
+        <v-icon>settings</v-icon>
+      </v-btn>
       <v-btn @click="signOut()">
         <v-icon>exit_to_app</v-icon>
       </v-btn>

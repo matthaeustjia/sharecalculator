@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <MainBox>
       <div class="invest-header">
         <span> Add Stock </span>
@@ -7,7 +7,7 @@
       <AddBuy />
       <AddDividend
     /></MainBox>
-  </div>
+  </v-container>
 </template>
 
 <script>

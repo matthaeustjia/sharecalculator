@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <v-container>
     <AddStock />
     <RemoveStock />
-  </div>
+  </v-container>
 </template>
 
 <script>

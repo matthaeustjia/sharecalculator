@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container class="d-flex flex-column justify-center" v-if="!dialog">
+    <v-container v-if="!dialog">
       <div><Holdings /></div>
       <div class="date-option">
         <v-btn class="date-option-button" @click="openDialog('daily')"
@@ -18,7 +18,7 @@
         <v-btn class="date-option-button" @click="openDialog('all')">All</v-btn>
       </div>
     </v-container>
-    <div v-else>
+    <v-container v-else>
       <Holdings v-if="type == 'holdings'" />
       <Report v-else v-bind:type="type" v-bind:dateRanges="dateRanges" />
       <v-btn
@@ -28,7 +28,7 @@
         class="close-dialog-button"
         >Close</v-btn
       >
-    </div>
+    </v-container>
   </div>
 </template>
 
@@ -155,8 +155,8 @@ export default {
 
 <style lang="scss" scoped>
 .close-dialog-button {
-  position: fixed;
-  bottom: 3.5rem;
+  position: sticky;
+  bottom: 3.6rem;
 }
 .date-option {
   display: flex;
